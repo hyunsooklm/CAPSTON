@@ -2,51 +2,95 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:padding="20dp">
+
+
+    <ImageView
+        android:layout_width="154dp"
+        android:layout_height="158dp"
+        android:layout_marginLeft="15dp"
+        android:src="@drawable/friends" />
+
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_width="wrap_content"
+        android:layout_height="84dp"
+        android:fontFamily="@font/bungee"
         android:gravity="center_horizontal|center_vertical"
-        android:text="로그인"
-        android:textColor="@android:color/widget_edittext_dark"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:text="Welcome"
+        android:textColor="@android:color/tertiary_text_light"
+        android:textSize="40sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그인하고 OUR를 시작해보세요!"
+        android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
 
-        <EditText
-            android:id="@+id/sign_up_id"
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/sign_up_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:ems="10"
+                android:hint="이메일"
+                android:inputType="textEmailAddress" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="비밀번호"
+            app:passwordToggleEnabled="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/sign_up_pw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:ems="10"
-            android:hint="이메일"
-            android:inputType="textEmailAddress" />
-
-        <EditText
-            android:id="@+id/sign_up_pw"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="15dp"
-            android:ems="10"
-            android:hint="비밀번호"
             android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/sign_up_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="로그인" />
+            android:background="#FFC107"
+            android:text="로그인"
+            android:textColor="#120F0F" />
 
-        <Button
-            android:id="@+id/goto_sign_up_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="회원가입" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/goto_sign_up_btn"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="#FFC107"
+        android:text="회원가입"
+        android:textColor="#0E0B0B" />
+
+
 </LinearLayout>
