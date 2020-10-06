@@ -12,8 +12,8 @@
         android:layout_width="154dp"
         android:layout_height="158dp"
         android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/friends" />
-
 
     <TextView
         android:id="@+id/textView"
@@ -21,13 +21,15 @@
         android:layout_height="84dp"
         android:fontFamily="@font/bungee"
         android:gravity="center_horizontal|center_vertical"
-        android:text="Welcome"
-        android:textColor="@android:color/tertiary_text_light"
-        android:textSize="40sp" />
+        android:text="Welcome To OUR"
+        android:textColor="#8062B6"
+        android:textSize="40sp"
+       />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/kyobohandwriting"
         android:text="로그인하고 OUR를 시작해보세요!"
         android:textSize="18sp" />
 
@@ -49,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:ems="10"
+                android:fontFamily="@font/kyobohandwriting"
                 android:hint="이메일"
                 android:inputType="textEmailAddress" />
 
@@ -64,33 +67,47 @@
             app:passwordToggleEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/sign_up_pw"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:ems="10"
-            android:inputType="textPassword" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/sign_up_pw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:ems="10"
+                android:fontFamily="@font/kyobohandwriting"
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/sign_up_btn"
-            android:layout_width="match_parent"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:background="#FFC107"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/background_login"
+            android:fontFamily="@font/kyobohandwriting"
             android:text="로그인"
-            android:textColor="#120F0F" />
+            android:textAlignment="center"
+            android:textColor="#120F0F"
+            android:textSize="20sp" />
+
 
     </LinearLayout>
 
     <Button
         android:id="@+id/goto_sign_up_btn"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:background="#FFC107"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="-15dp"
+        android:background="@drawable/background_login"
+        android:fontFamily="@font/kyobohandwriting"
         android:text="회원가입"
-        android:textColor="#0E0B0B" />
+        android:textColor="#0E0B0B"
+        android:textSize="20sp" />
+
+
 
 
 </LinearLayout>

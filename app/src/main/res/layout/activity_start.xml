@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StartActivity"
-    android:background="#fece2f">
+    android:background="#CEC7ED"
+    tools:context=".StartActivity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -29,6 +29,7 @@
         android:fontFamily="@font/bmhannapro"
         android:text="OUR"
         android:textAlignment="center"
+        android:textColor="#EFF4F4"
         android:textSize="70sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,6 +45,7 @@
         android:fontFamily="@font/nanumbrush"
         android:text="친구들과 함께 OUR가 되어보세요"
         android:textAlignment="center"
+        android:textColor="#2C2727"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
