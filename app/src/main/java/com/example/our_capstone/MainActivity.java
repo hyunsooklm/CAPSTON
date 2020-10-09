@@ -7,12 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,12 +24,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {                                   //메인클래스
@@ -37,16 +42,57 @@ public class MainActivity extends AppCompatActivity {                           
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();                //파이어베이스의 인증 (회원관리) 이용해서 로그인정보 가져오기
         if (user == null) {                                                             //현재 상태가 로그인된 상태가 아니라면
             gotoSignInActivity();                                                       //로그인창으로 이동하기
         }
+        else {
+            findViewById(R.id.logout_btn).setOnClickListener(onClickListener);
+            findViewById(R.id.grp_crt_btn).setOnClickListener(onClickListener);
 
-        findViewById(R.id.logout_btn).setOnClickListener(onClickListener);
-        findViewById(R.id.grp_crt_btn).setOnClickListener(onClickListener);
-        grpShow();
+
+            db.collection("rooms")
+                    .whereArrayContains("users", user.getEmail())
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value,
+                                            @Nullable FirebaseFirestoreException e) {
+                            if (e != null) {
+                                Log.w(TAG, "Listen failed.", e);
+                                return;
+                            }
+
+                            GridView gridView = findViewById(R.id.grid_rooms);
+                            final GridListAdapter adapter = new GridListAdapter();
+                            List<String> rooms = new ArrayList<>();
+                            for (QueryDocumentSnapshot doc : value) {
+                                if (doc.getId() != null) {
+                                    ArrayList valueList = new ArrayList(doc.getData().values());
+                                    VoRoomInfo room = new VoRoomInfo(doc.getId(), valueList);
+                                    adapter.addRoom(room);
+                                    rooms.add(doc.getId());
+                                }
+                            }
+                            gridView.setAdapter(adapter);
+                            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    VoRoomInfo room = (VoRoomInfo)adapter.getItem(position);
+                                    gotoRoomActivity(room);
+                                }
+                            });
+                        }
+                    });
+        }
     }
 
+    private void gotoRoomActivity(VoRoomInfo room) {
+        Intent intent=new Intent(this,RoomActivity.class);
+        intent.putExtra("room_key",room.getKey());
+        startActivity(intent);
+    }
 
 
     View.OnClickListener onClickListener = new View.OnClickListener(){
@@ -96,32 +142,7 @@ public class MainActivity extends AppCompatActivity {                           
                 });
 
     }
-    private void grpShow(){                                                                     //메인함수에서 해당 이메일의 모임들 보여주기
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();                        //파이어베이스의 인증 (회원관리) 이용해서 로그인정보 가져오기
-        FirebaseFirestore db = FirebaseFirestore.getInstance();                                 //파이어베이스의 firestore (DB) 인스턴스 초기화
 
-        db.collection("rooms")
-                .whereArrayContains("users", user.getEmail())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            GridView gridView = findViewById(R.id.grid_rooms);
-                            GridListAdapter adapter = new GridListAdapter();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                ArrayList valueList = new ArrayList(document.getData().values());
-                                VoRoomInfo room = new VoRoomInfo(document.getId(),valueList);
-                                adapter.addRoom(room);
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                            gridView.setAdapter(adapter);
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-    }
     class GridListAdapter extends BaseAdapter{
         ArrayList<VoRoomInfo> rooms = new ArrayList<VoRoomInfo>();
         Context context;                //어플맄케이션 정보를 담고있는 객체
