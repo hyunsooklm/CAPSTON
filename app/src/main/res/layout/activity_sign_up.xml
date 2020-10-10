@@ -61,14 +61,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="38dp"
                 android:layout_marginTop="80dp"
                >
 
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/sign_up_id"
-                    android:layout_width="370dp"
+                    android:layout_width="340dp"
                     android:layout_height="50dp"
                     android:layout_marginBottom="15dp"
                     android:ems="10"
@@ -84,11 +84,11 @@
                 android:hint="비밀번호"
                 app:passwordToggleEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_marginLeft="20dp">
+                android:layout_marginLeft="38dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/sign_up_pw"
-                    android:layout_width="370dp"
+                    android:layout_width="340dp"
                     android:layout_height="50dp"
                     android:layout_marginBottom="15dp"
                     android:ems="10"
@@ -105,11 +105,11 @@
                 android:hint="비밀번호 확인"
                 app:passwordToggleEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_marginLeft="20dp">
+                android:layout_marginLeft="38dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/sign_up_pw2"
-                    android:layout_width="370dp"
+                    android:layout_width="340dp"
                     android:layout_height="50dp"
                     android:layout_marginBottom="15dp"
                     android:ems="10"
@@ -122,11 +122,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_marginLeft="20dp">
+                android:layout_marginLeft="38dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/sign_up_nm"
-                    android:layout_width="370dp"
+                    android:layout_width="340dp"
                     android:layout_height="50dp"
                     android:layout_marginBottom="15dp"
                     android:ems="10"
@@ -142,11 +142,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_marginLeft="20dp">
+                android:layout_marginLeft="38dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/sign_up_birth"
-                    android:layout_width="370dp"
+                    android:layout_width="340dp"
                     android:layout_height="50dp"
                     android:layout_marginBottom="15dp"
                     android:ems="10"
