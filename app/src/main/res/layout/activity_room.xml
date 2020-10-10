@@ -18,6 +18,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="HardcodedText" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="426dp"
+        android:layout_height="427dp"
+        app:layout_constraintBottom_toTopOf="@+id/footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/room_nm"
+        app:srcCompat="@drawable/ic_launcher_background" />
+
     <LinearLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"
@@ -28,11 +38,11 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/change_rm_info"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="Button"
+            android:text="방정보 변경"
             tools:ignore="ButtonStyle,HardcodedText" />
 
         <Button
@@ -40,20 +50,23 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Button"
+            tools:ignore="ButtonStyle,HardcodedText" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Button"
+            tools:ignore="ButtonStyle,HardcodedText" />/>
 
         <Button
             android:id="@+id/button4"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Button"
+            tools:ignore="ButtonStyle,HardcodedText" />/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

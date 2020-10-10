@@ -5,10 +5,12 @@ import java.util.ArrayList;
 public class VoRoomInfo {
     private String key;
     private ArrayList users = new ArrayList();
+    private String name;
 
-    public VoRoomInfo(String key, ArrayList users){
+    public VoRoomInfo(String key, ArrayList users, String name){
         this.key  = key;
         this.users = users;
+        this.name = name;
     }
 
     public String getKey() {
@@ -22,5 +24,11 @@ public class VoRoomInfo {
     }
     public void setUsers(ArrayList users) {
         this.users = users;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 }

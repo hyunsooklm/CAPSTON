@@ -70,15 +70,14 @@ public class MainActivity extends AppCompatActivity {                           
                             for (QueryDocumentSnapshot doc : value) {
                                 if (doc.getId() != null) {
                                     ArrayList valueList = new ArrayList(doc.getData().values());
-                                    VoRoomInfo room = new VoRoomInfo(doc.getId(), valueList);
+                                    VoRoomInfo room = new VoRoomInfo(doc.getId(), valueList, doc.get("name").toString());
                                     adapter.addRoom(room);
-                                    rooms.add(doc.getId());
                                 }
                             }
                             gridView.setAdapter(adapter);
                             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {          //해당 영역 클릭시 이동하게해줌
                                     VoRoomInfo room = (VoRoomInfo)adapter.getItem(position);
                                     gotoRoomActivity(room);
                                 }
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity {                           
 
     private void gotoRoomActivity(VoRoomInfo room) {
         Intent intent=new Intent(this,RoomActivity.class);
-        intent.putExtra("room_key",room.getKey());
+        intent.putExtra("room_key",room.getName());
         startActivity(intent);
     }
 
@@ -170,7 +169,7 @@ public class MainActivity extends AppCompatActivity {                           
                 convertView = inflater.inflate(R.layout.greedy_rooms, parent, false);
             }
             TextView nm = convertView.findViewById(R.id.nm);
-            nm.setText(room.getKey());
+            nm.setText(room.getName());
             return convertView;
         }
     }

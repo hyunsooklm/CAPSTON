@@ -11,13 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">               <!--첫 화면을 이걸로 지정한다!!!-->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".MainActivity"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity android:name=".SignInActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
 
         </activity>
@@ -27,6 +22,21 @@
         <activity android:name=".RoomActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
 
         </activity>
+        <activity android:name=".RoomInfoSettingActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
+
+        </activity>
+        <activity android:name=".StartActivity"> <!-- 첫 화면을 이걸로 지정한다!!! -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>

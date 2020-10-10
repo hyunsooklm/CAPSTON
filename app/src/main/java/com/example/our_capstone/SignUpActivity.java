@@ -55,7 +55,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void signUp(){
         //알아서 중복되는 id는 못올라가고 에러나게 파이어베이스가 막드라!!!
-        String email = ((EditText)findViewById(R.id.sign_up_id)).getText().toString();          //email이라는 String에 입력한 값 받아와서 string으로 넣어주기
+        String email = ((EditText)findViewById(R.id.room_nm)).getText().toString();          //email이라는 String에 입력한 값 받아와서 string으로 넣어주기
         String password = ((EditText)findViewById(R.id.sign_up_pw)).getText().toString();
         String password2 = ((EditText)findViewById(R.id.sign_up_pw2)).getText().toString();
         String nm = ((EditText)findViewById(R.id.sign_up_nm)).getText().toString();
