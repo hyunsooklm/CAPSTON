@@ -2,6 +2,7 @@ package com.example.our_capstone;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,6 +32,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +75,7 @@ public class MainActivity extends AppCompatActivity {                           
                             for (QueryDocumentSnapshot doc : value) {
                                 if (doc.getId() != null) {
                                     ArrayList valueList = new ArrayList(doc.getData().values());
-                                    VoRoomInfo room = new VoRoomInfo(doc.getId(), valueList, doc.get("name").toString());
+                                    VoRoomInfo room = new VoRoomInfo(doc.getId(), valueList, doc.get("name").toString(),doc.get("photo").toString());
                                     adapter.addRoom(room);
                                 }
                             }
@@ -89,7 +94,7 @@ public class MainActivity extends AppCompatActivity {                           
 
     private void gotoRoomActivity(VoRoomInfo room) {
         Intent intent=new Intent(this,RoomActivity.class);
-        intent.putExtra("room_key",room.getName());
+        intent.putExtra("room_key",room.getKey());
         startActivity(intent);
     }
 
@@ -121,6 +126,8 @@ public class MainActivity extends AppCompatActivity {                           
         ArrayList users = new ArrayList();
         users.add(user.getEmail());
         room.put("users", users);
+        room.put("name", "unknown");
+        room.put("photo","default");
 
 // Add a new document with a generated ID
         db.collection("rooms")                                                      //새 컬렉션 시작 (상위 디렉토리 생성????) 넣을 때마다 이 컬렉션의 이름으로 계속 들어가지만 key값은 다 다름
@@ -168,8 +175,27 @@ public class MainActivity extends AppCompatActivity {                           
                 LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.greedy_rooms, parent, false);
             }
-            TextView nm = convertView.findViewById(R.id.nm);
-            nm.setText(room.getName());
+            TextView nm = convertView.findViewById(R.id.nm);                                        //각 방의 이름이 들어갈 텍스트뷰
+            nm.setText(room.getName());                                                             //각 방이름 설정
+            if(!room.getPhoto().equals("default")) {                                                //방의 메인 화면이 지정되어있다면
+                final ImageView im = convertView.findViewById(R.id.imageView1);
+                StorageReference ref = FirebaseStorage.getInstance().getReference();
+                StorageReference pathReference = ref.child(room.getKey()+"/"+room.getPhoto());
+                pathReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            // Glide 이용하여 이미지뷰에 로딩
+                            Glide.with(MainActivity.this)
+                                    .load(task.getResult())
+                                    .into(im);
+                        } else {
+                            // URL을 가져오지 못하면 토스트 메세지
+                            Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
             return convertView;
         }
     }

@@ -6,11 +6,13 @@ public class VoRoomInfo {
     private String key;
     private ArrayList users = new ArrayList();
     private String name;
+    private String photo;
 
-    public VoRoomInfo(String key, ArrayList users, String name){
+    public VoRoomInfo(String key, ArrayList users, String name, String photo){
         this.key  = key;
         this.users = users;
         this.name = name;
+        this.photo = photo;
     }
 
     public String getKey() {
@@ -30,5 +32,11 @@ public class VoRoomInfo {
     }
     public void setName(String name) {
         this.name = name;
+    }
+    public String getPhoto() {
+        return photo;
+    }
+    public void setPhoto(String photo) {
+        this.name = photo;
     }
 }
