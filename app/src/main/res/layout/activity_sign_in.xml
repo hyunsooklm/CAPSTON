@@ -6,8 +6,6 @@
     android:orientation="vertical"
     android:background="#fff"
     android:padding="20dp">
-
-
     <ImageView
         android:layout_width="154dp"
         android:layout_height="158dp"
@@ -77,7 +75,16 @@
                 android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
+        <com.kakao.usermgmt.LoginButton
+            android:id="@+id/btn_kakao_login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+            android:visibility="gone" />
+        <Button
+            android:id="@+id/btn_custom_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="카카오 로그인" />
         <Button
             android:id="@+id/sign_up_btn"
             style="@style/TextAppearance.AppCompat.Body1"

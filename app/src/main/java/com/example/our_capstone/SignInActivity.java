@@ -3,6 +3,7 @@ package com.example.our_capstone;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -14,16 +15,39 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.kakao.auth.Session;
+//--------------------------------
+import androidx.annotation.Nullable;
 
+import com.kakao.auth.AuthType;
+import com.kakao.usermgmt.LoginButton;
+
+//---------------------------=----
 public class SignInActivity extends AppCompatActivity {                         //메인클래스
     private FirebaseAuth mAuth;                                                 //파이어 베이스 인스턴스 선언
     private static final String TAG = "SignUpActivity";
+    private Button btn_custom_login;
+    private LoginButton btn_kakao_login;
+//    private Button btn_custom_login_out;
+    private SessionCallback sessionCallback = new SessionCallback();
+    Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {                        //메인함수
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);                              //이 자바가 참조할 페이지, 첫화면으로 지정하는 것은 AndroidManifest.xml에서!!!
-
+        // Initialize kakao_login button
+//        btn_custom_login = (Button) findViewById(R.id.btn_custom_login);
+        btn_kakao_login = (LoginButton) findViewById(R.id.btn_kakao_login);
+        session = Session.getCurrentSession();
+        session.addCallback(sessionCallback);
+        btn_kakao_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btn_kakao_login.performClick();
+                gotoMainActivity();
+            }
+        });
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();                                     //파이어베이스 인스턴스 초기화
 
@@ -32,6 +56,24 @@ public class SignInActivity extends AppCompatActivity {                         
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // 세션 콜백 삭제
+        Session.getCurrentSession().removeCallback(sessionCallback);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // 카카오톡|스토리 간편로그인 실행 결과를 받아서 SDK로 전달
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+      @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
