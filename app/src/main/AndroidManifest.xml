@@ -11,8 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"/>
-
+        <activity android:name=".MemeberActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".SignInActivity"> <!-- 새 엑티비티 추가할때마다 이렇게 추가해주기!!! -->
 
         </activity>
