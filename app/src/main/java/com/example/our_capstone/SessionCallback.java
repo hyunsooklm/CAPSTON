@@ -1,3 +1,4 @@
+/*
 package com.example.our_capstone;
 
 import android.content.Intent;
@@ -89,3 +90,4 @@ public class SessionCallback extends AppCompatActivity implements ISessionCallba
         startActivity(intent);                                                                  //엑티비티 이동
     }
 }
+*/

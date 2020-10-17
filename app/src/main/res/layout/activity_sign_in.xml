@@ -80,11 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
             android:visibility="gone" />
-        <Button
-            android:id="@+id/btn_custom_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="카카오 로그인" />
+
         <Button
             android:id="@+id/sign_up_btn"
             style="@style/TextAppearance.AppCompat.Body1"

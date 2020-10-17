@@ -38,18 +38,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.kakao.auth.ApiErrorCode;
-import com.kakao.auth.ISessionCallback;
-import com.kakao.auth.KakaoSDK;
 import com.kakao.auth.Session;
-import com.kakao.network.ErrorResult;
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.MeV2ResponseCallback;
-import com.kakao.usermgmt.response.MeV2Response;
-import com.kakao.util.OptionalBoolean;
-import com.kakao.util.exception.KakaoException;
-
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +50,12 @@ public class MainActivity extends AppCompatActivity {                           
     protected void onCreate(Bundle savedInstanceState) {                                //메인함수
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Session.getCurrentSession().checkAndImplicitOpen(); //현재 앱에 유효한 카카오 로그인 토큰이 있다면, 바로 로그인일 시켜주는 함수
+
+        /*checkAndImplicitOpen() 함수는 앱이 실행될 때 가장 먼저 켜지는 Activity의 onCreate 안에 있어야 정상적으로 작동합니다.
+        여기서는 LoginActivity가 가장 먼저 실행되기 때문에 LoginActivity의 onCreate 안에 checkAndImplicitOpen() 함수가 있었죠.
+        만약 앱의 시작점이 로그인 Activity가 아닌 다른 Activity(예를 들어 로딩 화면 Activity 등)라면,
+        로그인 Activity가 아닌 시작점인 Activity의 onCreate 안에 checkAndImplicitOpen()를 넣어주어야 합니다.*/
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
