@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -118,6 +119,11 @@ public class MainActivity extends AppCompatActivity {                           
         Intent intent=new Intent(this,SignInActivity.class);
         startActivity(intent);
     }
+    private void gotoRoomInfoSettingActivity(String room_key) {
+        Intent intent=new Intent(this,RoomInfoSettingActivity.class);
+        intent.putExtra("room_key",room_key);
+        startActivity(intent);                                                               //어차피 방정보 변경은 여기로 돌아오는것을 함수로 해서 없에줘야함
+    }
     private void grpCreate(){                                                               //모임 생성하기 함수
         FirebaseFirestore db = FirebaseFirestore.getInstance();                             //파이어베이스의 firestore (DB) 인스턴스 초기화
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();                    //파이어베이스의 인증 (회원관리) 이용해서 로그인정보 가져오기
@@ -129,6 +135,7 @@ public class MainActivity extends AppCompatActivity {                           
         room.put("name", "unknown");
         room.put("photo","default");
 
+
 // Add a new document with a generated ID
         db.collection("rooms")                                                      //새 컬렉션 시작 (상위 디렉토리 생성????) 넣을 때마다 이 컬렉션의 이름으로 계속 들어가지만 key값은 다 다름
                 .add(room)                                                                       //map을 넣어줍니다.
@@ -137,6 +144,17 @@ public class MainActivity extends AppCompatActivity {                           
                     public void onSuccess(DocumentReference documentReference) {
                         showToast("새 모임을 생성하였습니다.");
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        Map<String, Object> chat = new HashMap<>();
+                        Map<String, Object> album = new HashMap<>();
+                        album.put("name", "unknown");
+                        album.put("photo","default");
+                        Map<String, Object> our = new HashMap<>();
+                        FirebaseFirestore db1 = FirebaseFirestore.getInstance();
+                        CollectionReference citiesRef = db1.collection("rooms");       //아랫줄에서 방금 만든 방에 chats,앨범s,ours라는 하위 콜렉션 생성
+                        citiesRef.document(documentReference.getId()).collection("chats").add(chat);
+                        citiesRef.document(documentReference.getId()).collection("albums").add(album);
+                        citiesRef.document(documentReference.getId()).collection("ours").add(our);
+                        gotoRoomInfoSettingActivity(documentReference.getId());                     //방 만들면 방설정창으로 이동
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

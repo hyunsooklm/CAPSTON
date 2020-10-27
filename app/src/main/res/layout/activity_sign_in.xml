@@ -24,7 +24,7 @@
         android:text="Welcome To OUR"
         android:textColor="#8062B6"
         android:textSize="40sp"
-        />
+       />
 
     <TextView
         android:layout_width="wrap_content"

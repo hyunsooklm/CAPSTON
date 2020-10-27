@@ -1,6 +1,7 @@
 package com.example.our_capstone;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;                                                 //파이어 베이스 인스턴스 선언
@@ -55,11 +57,11 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void signUp(){
         //알아서 중복되는 id는 못올라가고 에러나게 파이어베이스가 막드라!!!
-        String email = ((EditText)findViewById(R.id.room_nm)).getText().toString();          //email이라는 String에 입력한 값 받아와서 string으로 넣어주기
+        String email = ((EditText)findViewById(R.id.sign_up_id)).getText().toString();          //email이라는 String에 입력한 값 받아와서 string으로 넣어주기
         String password = ((EditText)findViewById(R.id.sign_up_pw)).getText().toString();
         String password2 = ((EditText)findViewById(R.id.sign_up_pw2)).getText().toString();
-        String nm = ((EditText)findViewById(R.id.sign_up_nm)).getText().toString();
-        String bitrh = ((EditText)findViewById(R.id.sign_up_birth)).getText().toString();
+        final String nm = ((EditText)findViewById(R.id.sign_up_nm)).getText().toString();
+        final String bitrh = ((EditText)findViewById(R.id.sign_up_birth)).getText().toString();
         if(email.length()>0 && password.length()>0 && password2.length()>0 && nm.length()>0 && bitrh.length()>0){
             if(password.equals(password2) ) {
                 if(bitrh.length()==6){
@@ -70,6 +72,20 @@ public class SignUpActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     FirebaseUser user = mAuth.getCurrentUser();
+                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName(nm+'_'+bitrh)                                     // 이름 넣기(생년월일 넣을 때가 없어서 여기따가 넣겠습니다.)
+                                            //.setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))  //프사 넣기
+                                            .build();
+
+                                    user.updateProfile(profileUpdates)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d(TAG, "User profile updated.");
+                                                    }
+                                                }
+                                            });
                                     showToast("회원가입 성공!");
                                 } else {
                                     // If sign in fails, display a message to the user.
