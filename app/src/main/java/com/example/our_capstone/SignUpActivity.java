@@ -63,7 +63,7 @@ public class SignUpActivity extends AppCompatActivity {
         if(email.length()>0 && password.length()>0 && password2.length()>0 && nm.length()>0 && bitrh.length()>0){
             if(password.equals(password2) ) {
                 if(bitrh.length()==6){
-                    mAuth.createUserWithEmailAndPassword(email, password)
+                    mAuth.createUserWithEmailAndPassword(email, password) //회원가입코드
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -77,7 +77,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                 }
                             }
-                        });
+                        });//회원가입코드
                 }
                 else{
                     showToast("생년월일을 6자로 입력해주세요.");
