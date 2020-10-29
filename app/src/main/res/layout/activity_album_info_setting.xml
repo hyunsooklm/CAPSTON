@@ -26,8 +26,8 @@
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:src="@drawable/cutefriends"
+        android:layout_height="130dp"
+        android:src="@drawable/photographer"
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="85dp"
+        android:layout_marginBottom="120dp"
         android:fontFamily="@font/kyobohandwriting"
         android:gravity="center_horizontal|center_vertical"
         android:text="OUR"
@@ -120,7 +120,7 @@
                     android:layout_marginTop="40dp"
                     android:ems="10"
                     android:fontFamily="@font/kyobohandwriting"
-                    android:hint="그룹 이름"
+                    android:hint="앨범 이름"
                     android:inputType="textEmailAddress" />
 
 
@@ -146,4 +146,3 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

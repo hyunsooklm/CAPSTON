@@ -153,7 +153,7 @@ public class RoomInfoSettingActivity extends AppCompatActivity {                
             progressDialog.show();
             FirebaseStorage storage = FirebaseStorage.getInstance();                                //storage 인스턴스 생성
             //Unique한 파일명을 만들자.
-            SimpleDateFormat formatter = new SimpleDateFormat("yyMMDD_HHmmss");             //이름이 년월일_시분초로 생성
+            SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd_HHmmss");             //이름이 년월일_시분초로 생성
             Date now = new Date();
             String filename = formatter.format(now) + ".png";                                       //최종 이름이 될 녀석
             sto_pho_path = filename;                                                                //전역변수에도 넣어줌

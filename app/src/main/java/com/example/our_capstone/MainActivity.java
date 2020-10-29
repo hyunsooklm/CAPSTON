@@ -31,12 +31,17 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.core.OrderBy;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firestore.v1.StructuredQuery;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,14 +150,19 @@ public class MainActivity extends AppCompatActivity {                           
                         showToast("새 모임을 생성하였습니다.");
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         Map<String, Object> chat = new HashMap<>();
-                        Map<String, Object> album = new HashMap<>();
-                        album.put("name", "unknown");
-                        album.put("photo","default");
+                        //Map<String, Object> album = new HashMap<>();
+                        //album.put("name", "unknown");
+                        //album.put("photo","default");
                         Map<String, Object> our = new HashMap<>();
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");             //이름이 년월일_시분초로 생성
+                        Date now = new Date();
+                        our.put("title",formatter.format(now) + "_OUR에 오신 것을 환영합니다.");
+                        our.put("content","OUR에 오신 것을 환영합니다.");
+                        our.put("author","관리자");
                         FirebaseFirestore db1 = FirebaseFirestore.getInstance();
                         CollectionReference citiesRef = db1.collection("rooms");       //아랫줄에서 방금 만든 방에 chats,앨범s,ours라는 하위 콜렉션 생성
                         citiesRef.document(documentReference.getId()).collection("chats").add(chat);
-                        citiesRef.document(documentReference.getId()).collection("albums").add(album);
+                        //citiesRef.document(documentReference.getId()).collection("albums").add(album);
                         citiesRef.document(documentReference.getId()).collection("ours").add(our);
                         gotoRoomInfoSettingActivity(documentReference.getId());                     //방 만들면 방설정창으로 이동
                     }

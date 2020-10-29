@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -19,6 +21,7 @@ public class MenuActivity extends AppCompatActivity {
         KEY = intent.getExtras().getString("room_key");
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
+        findViewById(R.id.qna).setOnClickListener(onClickListener);
     }
     @Override public void onBackPressed(){                                                          //뒤로가기 버튼 눌리면
         super.onBackPressed();
@@ -63,4 +66,20 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
         MenuActivity.this.finish();
     }
+    private void gotoQnaActivity(String room_key) {
+        Intent intent=new Intent(this,QnaActivity.class);
+        intent.putExtra("room_key",room_key);
+        startActivity(intent);
+        MenuActivity.this.finish();
+    }
+    View.OnClickListener onClickListener = new View.OnClickListener(){
+        @Override
+        public  void onClick(View v){
+            switch (v.getId()){
+                case R.id.qna:
+                    gotoQnaActivity(KEY);
+                    break;
+            }
+        }
+    };
 }
