@@ -21,6 +21,10 @@ public class SessionCallback extends AppCompatActivity implements ISessionCallba
     // 로그인에 성공한 상태
     @Override
     public void onSessionOpened() {
+<<<<<<< HEAD
+=======
+        Log.e("SessionCallback :: ", "qqqqqqqqqqqqqq : ");
+>>>>>>> hyunsoo
         requestMe();
     }
 
@@ -89,5 +93,9 @@ public class SessionCallback extends AppCompatActivity implements ISessionCallba
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);                                       //메인창에서 뒤로가기 눌렀을 때 바로 로그인창이 아니라 꺼지게 하려고!!!
         startActivity(intent);                                                                  //엑티비티 이동
     }
+<<<<<<< HEAD
 }
 */
+=======
+}*/
+>>>>>>> hyunsoo

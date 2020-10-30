@@ -3,16 +3,13 @@ package com.example.our_capstone;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,13 +24,13 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class RoomInfoSettingActivity extends AppCompatActivity {                                   //메인클래스
+public class AlbumInfoSettingActivity extends AppCompatActivity {                                   //메인클래스
     private static final String TAG = "AppCompatActivity";
-    private String KEY ;
+    private String RKEY ;
+    private String AKEY ;
     private static final int REQUEST_CODE = 0;
     private ImageView imageView;
     private Uri filepath;
@@ -41,10 +38,12 @@ public class RoomInfoSettingActivity extends AppCompatActivity {                
     @Override
     protected void onCreate(Bundle savedInstanceState) {                                            //메인함수
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_room_info_setting);
+        setContentView(R.layout.activity_album_info_setting);
         Intent intent = getIntent();    //데이터 수신
         String room_key = intent.getExtras().getString("room_key");
-        KEY = room_key;
+        String album_key = intent.getExtras().getString("album_key");
+        RKEY = room_key;
+        AKEY = album_key;
         imageView = (ImageView)findViewById(R.id.image);
         imageView.setOnClickListener(new View.OnClickListener(){                                    //이미지뷰 누르면 갤러리나오게
             @Override
@@ -64,15 +63,14 @@ public class RoomInfoSettingActivity extends AppCompatActivity {                
             String room_key = intent.getExtras().getString("room_key");
             switch (v.getId()){
                 case R.id.apply_btn:                                                                //22행에서 findView없으면 실행안댐
-                    apply(KEY);
-                    //gotoRoomActivity(room_key);
+                    apply(RKEY, AKEY);
                     break;
             }
         }
     };
     private void updt_roomInfo(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();                                     //파이어베이스의 firestore (DB) 인스턴스 초기화
-        DocumentReference nmRef = db.collection("rooms").document(KEY);
+        DocumentReference nmRef = db.collection("rooms").document(RKEY).collection("albums").document(AKEY);
         EditText editText = (EditText)findViewById(R.id.room_nm);
         nmRef                                                                                       //DB에서 해당 방 이름 변경
                 .update("name", editText.getText().toString())
@@ -105,9 +103,9 @@ public class RoomInfoSettingActivity extends AppCompatActivity {                
                     });
         }
     }
-    private void apply(String room_key){                                                            //적용버튼을 눌렀을 때
+    private void apply(String room_key, String album_key){                                                            //적용버튼을 눌렀을 때
         FirebaseFirestore db = FirebaseFirestore.getInstance();                                     //파이어베이스의 firestore (DB) 인스턴스 초기화
-        DocumentReference nmRef = db.collection("rooms").document(room_key);
+        DocumentReference nmRef = db.collection("rooms").document(room_key).collection("albums").document(album_key);
 
 
         //Firestore에 사진저장하고 사진 경로 만들기
@@ -117,15 +115,15 @@ public class RoomInfoSettingActivity extends AppCompatActivity {                
         else{
         //그 저장된 이름으로 DB의 photo에 저장(나중에 default인지 확인해서 사진 불러올것임)
             updt_roomInfo();
-            Toast.makeText(getApplicationContext(), "방 설정 변경 완료!", Toast.LENGTH_SHORT).show();
-            gotoRoomActivity(room_key);
+            Toast.makeText(getApplicationContext(), "앨범 설정 변경 완료!", Toast.LENGTH_SHORT).show();
+            gotoAlbumActivity(room_key);
         }
     }
-    private void gotoRoomActivity(String room_key) {
-        Intent intent=new Intent(this,RoomActivity.class);
+    private void gotoAlbumActivity(String room_key) {
+        Intent intent=new Intent(this,AlbumActivity.class);
         intent.putExtra("room_key",room_key);
         startActivity(intent);
-        RoomInfoSettingActivity.this.finish();
+        AlbumInfoSettingActivity.this.finish();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {                 //갤러리에서 사진 선택하면 그걸 이미지뷰에 띄우려고
@@ -153,12 +151,12 @@ public class RoomInfoSettingActivity extends AppCompatActivity {                
             progressDialog.show();
             FirebaseStorage storage = FirebaseStorage.getInstance();                                //storage 인스턴스 생성
             //Unique한 파일명을 만들자.
-            SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd_HHmmss");             //이름이 년월일_시분초로 생성
+            SimpleDateFormat formatter = new SimpleDateFormat("yyMMDD_HHmmss");             //이름이 년월일_시분초로 생성
             Date now = new Date();
             String filename = formatter.format(now) + ".png";                                       //최종 이름이 될 녀석
             sto_pho_path = filename;                                                                //전역변수에도 넣어줌
                                                                                                     //storage 주소와 폴더 파일명을 지정해 준다.(방Key의 하위폴더에 사진 넣기)
-            StorageReference storageRef = storage.getReferenceFromUrl("gs://our-capstone-613a9.appspot.com").child(KEY+"/" + filename);
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://our-capstone-613a9.appspot.com").child(RKEY+"/" + AKEY +"/"+filename);
             storageRef.putFile(filepath)                                                            //올리기 시작
                     //성공시
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -166,8 +164,8 @@ public class RoomInfoSettingActivity extends AppCompatActivity {                
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss(); //업로드 진행 Dialog 상자 닫기
                             updt_roomInfo();
-                            Toast.makeText(getApplicationContext(), "방 설정 변경 완료!", Toast.LENGTH_SHORT).show();
-                            gotoRoomActivity(KEY);
+                            Toast.makeText(getApplicationContext(), "앨범 설정 변경 완료!", Toast.LENGTH_SHORT).show();
+                            gotoAlbumActivity(RKEY);
 
                         }
                     })
@@ -196,6 +194,6 @@ public class RoomInfoSettingActivity extends AppCompatActivity {                
     @Override public void onBackPressed(){                                                          //뒤로가기 버튼 눌리면
         super.onBackPressed();
         moveTaskToBack(true);
-        gotoRoomActivity(KEY);
+        gotoAlbumActivity(RKEY);
     }
 }

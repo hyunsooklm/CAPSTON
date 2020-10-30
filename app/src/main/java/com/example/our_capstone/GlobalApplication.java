@@ -82,4 +82,8 @@ public class GlobalApplication extends Application {
             };
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> hyunsoo

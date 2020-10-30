@@ -1,17 +1,14 @@
 package com.example.our_capstone;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,22 +17,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class RoomActivity  extends AppCompatActivity {                                   //메인클래스
     private static final String TAG = "AppCompatActivity";
+    private String KEY;
     private ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {                                //메인함수
@@ -43,7 +36,10 @@ public class RoomActivity  extends AppCompatActivity {                          
         setContentView(R.layout.activity_room);
         Intent intent = getIntent();    //데이터 수신
         final String room_key = intent.getExtras().getString("room_key");
+        KEY = room_key;
         imageView = (ImageView)findViewById(R.id.imageView);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
         //방정보 따오기
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final DocumentReference docRef = db.collection("rooms").document(room_key);
@@ -71,6 +67,7 @@ public class RoomActivity  extends AppCompatActivity {                          
         });
 
         findViewById(R.id.change_rm_info).setOnClickListener(onClickListener);
+        //findViewById(R.id.goto_our).setOnClickListener(onClickListener);
     }
     View.OnClickListener onClickListener = new View.OnClickListener(){
         @Override
@@ -78,14 +75,34 @@ public class RoomActivity  extends AppCompatActivity {                          
             Intent intent = getIntent();    //데이터 수신
             String room_key = intent.getExtras().getString("room_key");
             switch (v.getId()){
-                case R.id.change_rm_info:                                       //22행에서 findView없으면 실행안댐
+                case R.id.change_rm_info:                                                           //73행에서 findView없으면 실행안댐
                     gotoRoomInfoSettingActivity(room_key);
                     break;
+                /*case R.id.goto_our:                                                                 //74행에서 findView없으면 실행안댐
+                    gotoOurActivity(room_key);
+                    break;*/
             }
         }
     };
     private void gotoRoomInfoSettingActivity(String room_key) {
         Intent intent=new Intent(this,RoomInfoSettingActivity.class);
+        intent.putExtra("room_key",room_key);
+        startActivity(intent);
+        RoomActivity.this.finish();                                                                 //어차피 방정보 변경은 여기로 돌아오는것을 함수로 해서 없에줘야함
+    }
+    private void gotoOurActivity(String room_key) {
+        Intent intent=new Intent(this,OurActivity.class);
+        intent.putExtra("room_key",room_key);
+        startActivity(intent);
+    }
+    private void gotoMenuActivity(String room_key) {
+        Intent intent=new Intent(this,MenuActivity.class);
+        intent.putExtra("room_key",room_key);
+        startActivity(intent);
+        RoomActivity.this.finish();
+    }
+    private void gotoAlbumActivity(String room_key) {
+        Intent intent=new Intent(this,AlbumActivity.class);
         intent.putExtra("room_key",room_key);
         startActivity(intent);
         RoomActivity.this.finish();
@@ -113,4 +130,31 @@ public class RoomActivity  extends AppCompatActivity {                          
             }
         });
     }
+    BottomNavigationView.OnNavigationItemSelectedListener navlistener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()){
+                        case R.id.nav_home:
+                            return true;
+
+                        case R.id.nav_chat:
+                            return true;
+
+                        case R.id.nav_menu:
+                            gotoMenuActivity(KEY);
+                            return true;
+
+                        case R.id.nav_album:
+                            gotoAlbumActivity(KEY);
+                            return true;
+
+                        case R.id.nav_member:
+                            return true;
+
+                    }
+                    return false;
+                }
+            };
+
 }
