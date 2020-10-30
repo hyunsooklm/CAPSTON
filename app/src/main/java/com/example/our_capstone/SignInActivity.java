@@ -56,7 +56,7 @@ public class SignInActivity extends AppCompatActivity {                         
 
         findViewById(R.id.sign_up_btn).setOnClickListener(onClickListener);     // xml에서 sign_up_btn이라는 id의 위젯 가져오고 이 친구의 클릭리스너는 밑의 onClickListener이다!!!
         findViewById(R.id.goto_sign_up_btn).setOnClickListener(onClickListener);
-        findViewById(R.id.btn_kakao_login).setOnClickListener(onClickListener);
+        //findViewById(R.id.btn_kakao_login).setOnClickListener(onClickListener);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

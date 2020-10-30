@@ -1,3 +1,4 @@
+/*
 package com.example.our_capstone;
 
 import android.content.Intent;
@@ -89,4 +90,4 @@ public class SessionCallback extends AppCompatActivity implements ISessionCallba
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);                                       //메인창에서 뒤로가기 눌렀을 때 바로 로그인창이 아니라 꺼지게 하려고!!!
         startActivity(intent);                                                                  //엑티비티 이동
     }
-}
+}*/
