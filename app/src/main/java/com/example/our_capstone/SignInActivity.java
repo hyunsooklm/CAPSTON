@@ -1,23 +1,12 @@
 package com.example.our_capstone;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-<<<<<<< HEAD
-=======
-import android.util.Base64;
->>>>>>> hyunsoo
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,19 +14,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-<<<<<<< HEAD
 import com.kakao.auth.Session;
 
 import com.kakao.auth.ISessionCallback;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.ApiErrorCode;
-=======
-import com.kakao.auth.ApiErrorCode;
-import com.kakao.auth.ISessionCallback;
-import com.kakao.auth.Session;
-import com.kakao.network.ErrorResult;
-import com.kakao.usermgmt.LoginButton;
->>>>>>> hyunsoo
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
@@ -45,41 +26,15 @@ import com.kakao.usermgmt.response.model.Profile;
 import com.kakao.usermgmt.response.model.UserAccount;
 import com.kakao.util.exception.KakaoException;
 
-<<<<<<< HEAD
-
-public class SignInActivity extends AppCompatActivity {                         //메인클래스
-    private FirebaseAuth mAuth;
-    //파이어 베이스 인스턴스 선언
-=======
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 
 public class SignInActivity extends AppCompatActivity {                         //메인클래스
     private FirebaseAuth mAuth;                                                 //파이어 베이스 인스턴스 선언
->>>>>>> hyunsoo
     private SessionCallback sessionCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {                        //메인함수
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);                              //이 자바가 참조할 페이지, 첫화면으로 지정하는 것은 AndroidManifest.xml에서!!!
-<<<<<<< HEAD
-        mAuth = FirebaseAuth.getInstance();                                     //파이어베이스 인스턴스 초기화
-        sessionCallback = new SessionCallback();
-        Session.getCurrentSession().addCallback(sessionCallback);
-        // Initialize Firebase Auth
-
-        findViewById(R.id.sign_up_btn).setOnClickListener(onClickListener);     // xml에서 sign_up_btn이라는 id의 위젯 가져오고 이 친구의 클릭리스너는 밑의 onClickListener이다!!!
-        findViewById(R.id.goto_sign_up_btn).setOnClickListener(onClickListener);
-
-    }
-
-
-=======
-        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
-
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();                                     //파이어베이스 인스턴스 초기화
         sessionCallback = new SessionCallback();
@@ -89,7 +44,6 @@ public class SignInActivity extends AppCompatActivity {                         
         findViewById(R.id.goto_sign_up_btn).setOnClickListener(onClickListener);
         //findViewById(R.id.btn_kakao_login).setOnClickListener(onClickListener);
     }
->>>>>>> hyunsoo
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
@@ -100,12 +54,7 @@ public class SignInActivity extends AppCompatActivity {                         
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-<<<<<<< HEAD
-=======
-
-        // 세션 콜백 삭제
->>>>>>> hyunsoo
+        super.onDestroy();// 세션 콜백 삭제
         Session.getCurrentSession().removeCallback(sessionCallback);
     }
 
@@ -145,21 +94,13 @@ public class SignInActivity extends AppCompatActivity {                         
                             name = profile.getNickname();//이름
                         kakao_signIn(email, password, name, birthday);
                     }
-<<<<<<< HEAD
-=======
                     showToast(""+password+name+email+birthday);
->>>>>>> hyunsoo
                 }
             });
         }
 
         @Override
         public void onSessionOpenFailed(KakaoException e) {
-<<<<<<< HEAD
-            Log.i("hello world", "no_internetno_internetno_internetno_internetno_internetno_internetno_internet");
-=======
-            Log.i("hello world", "no_internetno_internetno_internetno_internetno_internetno_internetno_internet"+e.toString());
->>>>>>> hyunsoo
             Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: " + e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -215,10 +156,6 @@ public class SignInActivity extends AppCompatActivity {                         
             showToast("이메일 혹은 비밀번호를 입력해주세요.");
         }
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> hyunsoo
     private void kakao_signIn(final String email, final String password, final String name, final String birthday) {
         /*카카오로 회원가입->다시 재로그인 과정*/
         mAuth.signInWithEmailAndPassword(email, password) //로그인
@@ -237,12 +174,8 @@ public class SignInActivity extends AppCompatActivity {                         
                     }
                 });
     }
-<<<<<<< HEAD
 
-    private void showToast(String msg) {                                                            //메세지 alert띄우기
-=======
     private void showToast(String msg){                                                            //메세지 alert띄우기
->>>>>>> hyunsoo
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
@@ -256,10 +189,6 @@ public class SignInActivity extends AppCompatActivity {                         
         Intent intent = new Intent(this, SignUpActivity.class);                     //실행하려는 엑티비티 이름 intent 인스턴스에 넣어주기
         startActivity(intent);                                                                  //엑티비티 이동
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> hyunsoo
     public boolean kakao_signUp(final String email, final String password, String name, String birthday) {
         /*카카오로 회원가입, TF는 회원가입 성공/실패 여부 담는 변수, 그냥 boolean은 안되고 저 형태여야 되더라고..*/
         //알아서 중복되는 id는 못올라가고 에러나게 파이어베이스가 막드라!!!
@@ -285,8 +214,4 @@ public class SignInActivity extends AppCompatActivity {                         
             return false;
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> hyunsoo

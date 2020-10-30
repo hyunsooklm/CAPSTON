@@ -21,9 +21,6 @@
         <activity android:name=".GlobalApplication">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
 
         </activity>
-        <activity android:name=".SessionCallback">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
-
-        </activity>
         <activity android:name=".SignInActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
 
         </activity>
@@ -67,10 +64,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data
-            android:name="com.kakao.sdk.AppKey"
-            android:value="@string/kakao_app_key" />
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
