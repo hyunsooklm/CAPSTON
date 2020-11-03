@@ -107,6 +107,18 @@ public class RoomActivity  extends AppCompatActivity {                          
         startActivity(intent);
         RoomActivity.this.finish();
     }
+    private void gotoChatActivity(String room_key) {
+        Intent intent=new Intent(this,ChatActivity.class);
+        intent.putExtra("room_key",room_key);
+        startActivity(intent);
+        RoomActivity.this.finish();
+    }
+    private void gotoMemberActivity(String room_key) {
+        Intent intent=new Intent(this,MemberActivity.class);
+        intent.putExtra("room_key",room_key);
+        startActivity(intent);
+        RoomActivity.this.finish();
+    }
     private void loadImg(String room_key,String photo){
         StorageReference ref = FirebaseStorage.getInstance().getReference();
         StorageReference pathReference = ref.child(room_key+"/"+photo);
@@ -139,6 +151,7 @@ public class RoomActivity  extends AppCompatActivity {                          
                             return true;
 
                         case R.id.nav_chat:
+                            gotoChatActivity(KEY);
                             return true;
 
                         case R.id.nav_menu:
@@ -150,6 +163,7 @@ public class RoomActivity  extends AppCompatActivity {                          
                             return true;
 
                         case R.id.nav_member:
+                            gotoMemberActivity(KEY);
                             return true;
 
                     }

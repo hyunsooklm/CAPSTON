@@ -56,6 +56,7 @@ public class AlbumActivity extends AppCompatActivity {                          
         KEY = intent.getExtras().getString("room_key");
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
+        bottomNavigationView.setSelectedItemId(R.id.nav_album);
         /*------------------------------위는 액티비티 복붙--------------------------------*/
 
         findViewById(R.id.grp_crt_btn2).setOnClickListener(onClickListener);
@@ -108,6 +109,7 @@ public class AlbumActivity extends AppCompatActivity {                          
                             return true;
 
                         case R.id.nav_chat:
+                            gotoChatActivity();
                             return true;
 
                         case R.id.nav_menu:
@@ -118,6 +120,7 @@ public class AlbumActivity extends AppCompatActivity {                          
                             return true;
 
                         case R.id.nav_member:
+                            gotoMemberActivity();
                             return true;
 
                     }
@@ -133,6 +136,18 @@ public class AlbumActivity extends AppCompatActivity {                          
     private void gotoRoomActivity(String room_key) {
         Intent intent=new Intent(this,RoomActivity.class);
         intent.putExtra("room_key",room_key);
+        startActivity(intent);
+        AlbumActivity.this.finish();
+    }
+    private void gotoChatActivity() {
+        Intent intent=new Intent(this,ChatActivity.class);
+        intent.putExtra("room_key",KEY);
+        startActivity(intent);
+        AlbumActivity.this.finish();
+    }
+    private void gotoMemberActivity() {
+        Intent intent=new Intent(this,MemberActivity.class);
+        intent.putExtra("room_key",KEY);
         startActivity(intent);
         AlbumActivity.this.finish();
     }

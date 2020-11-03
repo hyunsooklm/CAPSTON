@@ -100,6 +100,7 @@ public class QnaActivity extends AppCompatActivity {                            
                             return true;
 
                         case R.id.nav_chat:
+                            gotoChatActivity(KEY);
                             return true;
 
                         case R.id.nav_menu:
@@ -111,6 +112,7 @@ public class QnaActivity extends AppCompatActivity {                            
                             return true;
 
                         case R.id.nav_member:
+                            gotoMemberActivity();
                             return true;
 
                     }
@@ -132,6 +134,18 @@ public class QnaActivity extends AppCompatActivity {                            
     private void gotoAlbumActivity(String room_key) {
         Intent intent=new Intent(this,AlbumActivity.class);
         intent.putExtra("room_key",room_key);
+        startActivity(intent);
+        QnaActivity.this.finish();
+    }
+    private void gotoChatActivity(String room_key) {
+        Intent intent=new Intent(this,ChatActivity.class);
+        intent.putExtra("room_key",room_key);
+        startActivity(intent);
+        QnaActivity.this.finish();
+    }
+    private void gotoMemberActivity() {
+        Intent intent=new Intent(this,MemberActivity.class);
+        intent.putExtra("room_key",KEY);
         startActivity(intent);
         QnaActivity.this.finish();
     }
