@@ -84,6 +84,7 @@
             android:id="@+id/grid_rooms"
             android:layout_width="fill_parent"
             android:layout_height="440dp"
+            android:backgroundTint="#FFFFFF"
             android:descendantFocusability="afterDescendants"
             android:numColumns="1"
             android:orientation="horizontal"
