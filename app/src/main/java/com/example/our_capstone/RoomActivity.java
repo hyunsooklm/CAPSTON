@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
@@ -187,8 +190,8 @@ public class RoomActivity  extends AppCompatActivity {                          
                     return false;
                 }
             };
-    private void updtQna(int index){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private void updtQna(final int index){
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("qnas")
                 .whereEqualTo("index", index+1)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -210,6 +213,37 @@ public class RoomActivity  extends AppCompatActivity {                          
                                 FirebaseFirestore db1 = FirebaseFirestore.getInstance();
                                 CollectionReference citiesRef = db1.collection("rooms");       //아랫줄에서 방금 만든 방에 chats,앨범s,ours라는 하위 콜렉션 생성
                                 citiesRef.document(KEY).collection("ours").add(our);
+                                //다 되었으면 원래 방의 date, index 고치기
+                                FirebaseFirestore db2 = FirebaseFirestore.getInstance();
+                                DocumentReference nmRef = db2.collection("rooms").document(KEY);
+                                nmRef                                                                                       //DB에서 해당 date 변경
+                                        .update("date", formatter.format(now))
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error updating document", e);
+                                            }
+                                        });
+                                nmRef                                                                                       //DB에서 해당 방 indedx 변경
+                                        .update("index", index+1)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error updating document", e);
+                                            }
+                                        });
                             }
                         }
                     }
