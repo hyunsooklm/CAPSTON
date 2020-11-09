@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="auto"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/signin_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".27"
+        app:layout_constraintHorizontal_bias="0.175"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/kyobohandwriting"
+        android:text="OUR"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.572"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:layout_width="136dp"
+        android:layout_height="107dp"
+        android:background="@drawable/talking"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.568"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="29dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+        android:background="@drawable/background_signup2"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".78"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/reply_btn2"
+            android:layout_width="79dp"
+            android:layout_height="47dp"
+            android:background="@drawable/background_btn"
+            android:backgroundTint="#BEB0D6"
+            android:fontFamily="@font/kyobohandwriting"
+            android:text="보내기"
+            android:textColor="#673AB7"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/reply3"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/kyobohandwriting"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:hint="메세지를 입력하세요"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/reply_btn2" />
+
+        <GridView
+            android:id="@+id/grid_rooms"
+            android:layout_width="fill_parent"
+            android:layout_height="480dp"
+            android:backgroundTint="#FFFFFF"
+            android:descendantFocusability="afterDescendants"
+            android:numColumns="1"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/reply_btn2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent">
+
+        </GridView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#A490C6"
+        android:backgroundTint="#B6A3D8"
+        android:backgroundTintMode="src_in"
+        app:backgroundTint="#fff"
+        app:itemIconSize="30dp"
+        app:labelVisibilityMode="unlabeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/room_menu" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
