@@ -225,8 +225,10 @@ public class MemberActivity extends AppCompatActivity {                         
             TextView nm = convertView.findViewById(R.id.textView11);                                        //각 방의 이름이 들어갈 텍스트뷰
             TextView ct = convertView.findViewById(R.id.textView12);                                        //각 방의 이름이 들어갈 텍스트뷰
 
+            String birth = chat.getContent()+"";
+            birth = birth.substring(2);
             nm.setText(chat.getName()+"");                                                          //멤버의 이름
-            ct.setText(chat.getContent()+"");                                                       //멤버의 생일
+            ct.setText(birth+"");                                                       //멤버의 생일
 
             return convertView;
         }

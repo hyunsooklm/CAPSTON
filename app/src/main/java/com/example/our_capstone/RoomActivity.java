@@ -87,6 +87,7 @@ public class RoomActivity  extends AppCompatActivity {                          
         });
 
         findViewById(R.id.change_rm_info).setOnClickListener(onClickListener);
+        findViewById(R.id.inviteBtn).setOnClickListener(onClickListener);
         //findViewById(R.id.goto_our).setOnClickListener(onClickListener);
     }
     View.OnClickListener onClickListener = new View.OnClickListener(){
@@ -97,6 +98,9 @@ public class RoomActivity  extends AppCompatActivity {                          
             switch (v.getId()){
                 case R.id.change_rm_info:                                                           //73행에서 findView없으면 실행안댐
                     gotoRoomInfoSettingActivity(room_key);
+                    break;
+                case R.id.inviteBtn:                                                           //73행에서 findView없으면 실행안댐
+                    PopupInviteActivity();
                     break;
                 /*case R.id.goto_our:                                                                 //74행에서 findView없으면 실행안댐
                     gotoOurActivity(room_key);
@@ -138,6 +142,11 @@ public class RoomActivity  extends AppCompatActivity {                          
         intent.putExtra("room_key",room_key);
         startActivity(intent);
         RoomActivity.this.finish();
+    }
+    private void PopupInviteActivity(){
+        Intent intent = new Intent(this, PopupInviteActivity.class);
+        intent.putExtra("room_key", KEY);
+        startActivityForResult(intent, 1);
     }
     private void loadImg(String room_key,String photo){
         StorageReference ref = FirebaseStorage.getInstance().getReference();

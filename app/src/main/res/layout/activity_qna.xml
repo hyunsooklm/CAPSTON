@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EDEDE8"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,27 +56,21 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <GridView
+        android:id="@+id/grid_rooms"
         android:layout_width="fill_parent"
         android:layout_height="520dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        android:numColumns="1"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.693">
 
-        <GridView
-            android:id="@+id/grid_rooms"
-            android:layout_width="fill_parent"
-            android:layout_height="520dp"
-            android:numColumns="1"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </GridView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </GridView>
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
