@@ -144,6 +144,10 @@ public class MainActivity extends AppCompatActivity {                           
         room.put("users", users);
         room.put("name", "unknown");
         room.put("photo","default");
+        room.put("index",1);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");                        //이름이 년월일로 생성
+        Date now = new Date();
+        room.put("date",formatter.format(now));
 
 
 // Add a new document with a generated ID
@@ -154,10 +158,6 @@ public class MainActivity extends AppCompatActivity {                           
                     public void onSuccess(DocumentReference documentReference) {
                         showToast("새 모임을 생성하였습니다.");
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                        Map<String, Object> chat = new HashMap<>();
-                        //Map<String, Object> album = new HashMap<>();
-                        //album.put("name", "unknown");
-                        //album.put("photo","default");
                         Map<String, Object> our = new HashMap<>();
                         SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");             //이름이 년월일_시분초로 생성
                         Date now = new Date();
@@ -166,7 +166,6 @@ public class MainActivity extends AppCompatActivity {                           
                         our.put("author","관리자");
                         FirebaseFirestore db1 = FirebaseFirestore.getInstance();
                         CollectionReference citiesRef = db1.collection("rooms");       //아랫줄에서 방금 만든 방에 chats,앨범s,ours라는 하위 콜렉션 생성
-                        citiesRef.document(documentReference.getId()).collection("chats").add(chat);
                         //citiesRef.document(documentReference.getId()).collection("albums").add(album);
                         citiesRef.document(documentReference.getId()).collection("ours").add(our);
                         gotoRoomInfoSettingActivity(documentReference.getId());                     //방 만들면 방설정창으로 이동

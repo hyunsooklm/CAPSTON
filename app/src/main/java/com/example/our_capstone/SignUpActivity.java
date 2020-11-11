@@ -13,11 +13,21 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;                                                 //파이어 베이스 인스턴스 선언
@@ -59,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void signUp(){
         //알아서 중복되는 id는 못올라가고 에러나게 파이어베이스가 막드라!!!
-        String email = ((EditText)findViewById(R.id.sign_up_id)).getText().toString();          //email이라는 String에 입력한 값 받아와서 string으로 넣어주기
+        final String email = ((EditText)findViewById(R.id.sign_up_id)).getText().toString();          //email이라는 String에 입력한 값 받아와서 string으로 넣어주기
         String password = ((EditText)findViewById(R.id.sign_up_pw)).getText().toString();
         String password2 = ((EditText)findViewById(R.id.sign_up_pw2)).getText().toString();
         final String nm = ((EditText)findViewById(R.id.sign_up_nm)).getText().toString();
@@ -88,6 +98,12 @@ public class SignUpActivity extends AppCompatActivity {
                                                     }
                                                 }
                                             });
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                    Map<String, Object> person = new HashMap<>();
+                                    person.put("name",nm);
+                                    person.put("birth",bitrh);
+                                    person.put("email",email);
+                                    db.collection("people").document(user.getUid()).set(person);
                                     showToast("회원가입 성공!");
                                 } else {
                                     // If sign in fails, display a message to the user.

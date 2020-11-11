@@ -57,6 +57,15 @@
         <activity android:name=".QnaDetailActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
 
         </activity>
+        <activity android:name=".ChatActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
+
+        </activity>
+        <activity android:name=".MemberActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
+
+        </activity>
+        <activity android:name=".PopupInviteActivity"  android:theme="@android:style/Theme.Dialog">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
+
+        </activity>
         <activity android:name=".StartActivity"> <!-- 첫 화면을 이걸로 지정한다!!! -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

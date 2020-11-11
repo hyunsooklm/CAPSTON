@@ -94,6 +94,7 @@ public class AlbumDetailActivity extends AppCompatActivity {                    
                             return true;
 
                         case R.id.nav_chat:
+                            gotoChatActivity();
                             return true;
 
                         case R.id.nav_menu:
@@ -105,6 +106,7 @@ public class AlbumDetailActivity extends AppCompatActivity {                    
                             return true;
 
                         case R.id.nav_member:
+                            gotoMemberActivity();
                             return true;
 
                     }
@@ -126,6 +128,18 @@ public class AlbumDetailActivity extends AppCompatActivity {                    
     private void gotoMenuActivity(String room_key) {
         Intent intent=new Intent(this,MenuActivity.class);
         intent.putExtra("room_key",room_key);
+        startActivity(intent);
+        AlbumDetailActivity.this.finish();
+    }
+    private void gotoChatActivity() {
+        Intent intent=new Intent(this,ChatActivity.class);
+        intent.putExtra("room_key",RKEY);
+        startActivity(intent);
+        AlbumDetailActivity.this.finish();
+    }
+    private void gotoMemberActivity() {
+        Intent intent=new Intent(this,MemberActivity.class);
+        intent.putExtra("room_key",RKEY);
         startActivity(intent);
         AlbumDetailActivity.this.finish();
     }

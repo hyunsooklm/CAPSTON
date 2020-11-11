@@ -2,6 +2,7 @@ package com.example.our_capstone;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,6 +15,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.kakao.auth.Session;
 
 import com.kakao.auth.ISessionCallback;
@@ -25,6 +28,9 @@ import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.usermgmt.response.model.Profile;
 import com.kakao.usermgmt.response.model.UserAccount;
 import com.kakao.util.exception.KakaoException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class SignInActivity extends AppCompatActivity {                         //메인클래스
@@ -72,7 +78,7 @@ public class SignInActivity extends AppCompatActivity {                         
                         finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다: " + errorResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
-                    }
+                    }  //여기 맞아
                 }
 
                 @Override
@@ -82,19 +88,26 @@ public class SignInActivity extends AppCompatActivity {                         
 
                 @Override
                 public void onSuccess(MeV2Response result) {
+                    Log.d("a","success!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                     password = "" + result.getId();
+                    Log.d("a","password:"+password);
                     UserAccount kakaoAccount = result.getKakaoAccount();
                     if (kakaoAccount != null) {
-                        if (kakaoAccount.getEmail() != null)
-                            email = kakaoAccount.getEmail();//이메일
-                        if (kakaoAccount.getBirthday() != null)
+                        if (kakaoAccount.getEmail() != null) {
+                            email = kakaoAccount.getEmail();//이메일행
+                            Log.d("aaa", "email:" + email);
+                        }
+                        if (kakaoAccount.getBirthday() != null) {
                             birthday = kakaoAccount.getBirthday();//생일
+                            Log.d("aaa", "birthday:" + birthday);
+                        }
                         Profile profile = kakaoAccount.getProfile();
-                        if (profile != null)
+                        if (profile != null) {
                             name = profile.getNickname();//이름
+                            Log.d("aaa", "name:" + name);
+                        }
                         kakao_signIn(email, password, name, birthday);
                     }
-                    showToast(""+password+name+email+birthday);
                 }
             });
         }
@@ -189,7 +202,7 @@ public class SignInActivity extends AppCompatActivity {                         
         Intent intent = new Intent(this, SignUpActivity.class);                     //실행하려는 엑티비티 이름 intent 인스턴스에 넣어주기
         startActivity(intent);                                                                  //엑티비티 이동
     }
-    public boolean kakao_signUp(final String email, final String password, String name, String birthday) {
+    public boolean kakao_signUp(final String email, final String password, final String name, final String birthday) {
         /*카카오로 회원가입, TF는 회원가입 성공/실패 여부 담는 변수, 그냥 boolean은 안되고 저 형태여야 되더라고..*/
         //알아서 중복되는 id는 못올라가고 에러나게 파이어베이스가 막드라!!!
         final boolean[] TF = {false};
@@ -200,7 +213,28 @@ public class SignInActivity extends AppCompatActivity {                         
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
+                                String fakebirthday = "00"+birthday;
                                 FirebaseUser user = mAuth.getCurrentUser();
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(name+'_'+fakebirthday)                                     // 이름 넣기(생년월일 넣을 때가 없어서 여기따가 넣겠습니다.)
+                                        //.setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))  //프사 넣기
+                                        .build();
+
+                                user.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d("kakaosignup", "User profile updated.");
+                                                }
+                                            }
+                                        });
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                Map<String, Object> person = new HashMap<>();
+                                person.put("name",name);
+                                person.put("birth",fakebirthday);
+                                person.put("email",email);
+                                db.collection("people").document(user.getUid()).set(person);
                                 showToast("카카오 연동 회원가입 완료!"); //여기까지가 카카오로그인 누르면 회원가입
                                 TF[0] = true; //회원가입성공
                             } else {

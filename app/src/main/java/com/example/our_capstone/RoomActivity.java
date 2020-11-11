@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,15 +19,27 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RoomActivity  extends AppCompatActivity {                                   //메인클래스
     private static final String TAG = "AppCompatActivity";
@@ -60,6 +75,11 @@ public class RoomActivity  extends AppCompatActivity {                          
                     if(!snapshot.getString("photo").equals("default")){                       //방 메인사진 설정
                         loadImg(room_key,snapshot.getString("photo"));
                     }
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");                        //이름이 년월일로 생성
+                    Date now = new Date();
+                    if(!snapshot.getString("date").equals(formatter.format(now))){               //만약 오늘 게시물이 올라가지 않았다면(출첵형식으로 올림)
+                        updtQna(snapshot.getLong("index").intValue());
+                    }
                 } else {
                     Log.d(TAG, source + " data: null");
                 }
@@ -67,6 +87,7 @@ public class RoomActivity  extends AppCompatActivity {                          
         });
 
         findViewById(R.id.change_rm_info).setOnClickListener(onClickListener);
+        findViewById(R.id.inviteBtn).setOnClickListener(onClickListener);
         //findViewById(R.id.goto_our).setOnClickListener(onClickListener);
     }
     View.OnClickListener onClickListener = new View.OnClickListener(){
@@ -77,6 +98,9 @@ public class RoomActivity  extends AppCompatActivity {                          
             switch (v.getId()){
                 case R.id.change_rm_info:                                                           //73행에서 findView없으면 실행안댐
                     gotoRoomInfoSettingActivity(room_key);
+                    break;
+                case R.id.inviteBtn:                                                           //73행에서 findView없으면 실행안댐
+                    PopupInviteActivity();
                     break;
                 /*case R.id.goto_our:                                                                 //74행에서 findView없으면 실행안댐
                     gotoOurActivity(room_key);
@@ -106,6 +130,23 @@ public class RoomActivity  extends AppCompatActivity {                          
         intent.putExtra("room_key",room_key);
         startActivity(intent);
         RoomActivity.this.finish();
+    }
+    private void gotoChatActivity(String room_key) {
+        Intent intent=new Intent(this,ChatActivity.class);
+        intent.putExtra("room_key",room_key);
+        startActivity(intent);
+        RoomActivity.this.finish();
+    }
+    private void gotoMemberActivity(String room_key) {
+        Intent intent=new Intent(this,MemberActivity.class);
+        intent.putExtra("room_key",room_key);
+        startActivity(intent);
+        RoomActivity.this.finish();
+    }
+    private void PopupInviteActivity(){
+        Intent intent = new Intent(this, PopupInviteActivity.class);
+        intent.putExtra("room_key", KEY);
+        startActivityForResult(intent, 1);
     }
     private void loadImg(String room_key,String photo){
         StorageReference ref = FirebaseStorage.getInstance().getReference();
@@ -139,6 +180,7 @@ public class RoomActivity  extends AppCompatActivity {                          
                             return true;
 
                         case R.id.nav_chat:
+                            gotoChatActivity(KEY);
                             return true;
 
                         case R.id.nav_menu:
@@ -150,11 +192,70 @@ public class RoomActivity  extends AppCompatActivity {                          
                             return true;
 
                         case R.id.nav_member:
+                            gotoMemberActivity(KEY);
                             return true;
 
                     }
                     return false;
                 }
             };
-
+    private void updtQna(final int index){
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("qnas")
+                .whereEqualTo("index", index+1)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
+                            return;
+                        }
+                        for (QueryDocumentSnapshot doc : value) {
+                            if (doc.getId() != null) {                                              //방의 our콜렉션에 추가하기
+                                Map<String, Object> our = new HashMap<>();
+                                SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
+                                Date now = new Date();
+                                our.put("title",formatter.format(now) + "_" + doc.getString("title"));
+                                our.put("content",doc.getString("content"));
+                                our.put("author","관리자");
+                                FirebaseFirestore db1 = FirebaseFirestore.getInstance();
+                                CollectionReference citiesRef = db1.collection("rooms");       //아랫줄에서 방금 만든 방에 chats,앨범s,ours라는 하위 콜렉션 생성
+                                citiesRef.document(KEY).collection("ours").add(our);
+                                //다 되었으면 원래 방의 date, index 고치기
+                                FirebaseFirestore db2 = FirebaseFirestore.getInstance();
+                                DocumentReference nmRef = db2.collection("rooms").document(KEY);
+                                nmRef                                                                                       //DB에서 해당 date 변경
+                                        .update("date", formatter.format(now))
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error updating document", e);
+                                            }
+                                        });
+                                nmRef                                                                                       //DB에서 해당 방 indedx 변경
+                                        .update("index", index+1)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error updating document", e);
+                                            }
+                                        });
+                            }
+                        }
+                    }
+                });
+    }
 }
