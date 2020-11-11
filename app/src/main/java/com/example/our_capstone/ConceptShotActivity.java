@@ -31,29 +31,24 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-public class AlbumDetailActivity extends AppCompatActivity {                                                //메인클래스
+public class ConceptShotActivity extends AppCompatActivity {                                                //메인클래스
     private static final String TAG = "AppCompatActivity";
-    private String RKEY="";
-    private String AKEY="";
+    private String KEY="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {                                            //메인함수
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_album_detail);
+        setContentView(R.layout.activity_concept_shot);
         Intent intent = getIntent();                                                                //데이터 수신
-        RKEY = intent.getExtras().getString("room_key");
-        AKEY = intent.getExtras().getString("album_key");
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
-        findViewById(R.id.grp_crt_btn2).setOnClickListener(onClickListener);
+        KEY = intent.getExtras().getString("room_key");
         /*그리드형식으로 사진들 보여주기*/
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference listRef = storage.getReference().child(RKEY+"/"+AKEY+"/pics");
+        StorageReference listRef = storage.getReference().child("conceptshot");
         listRef.listAll()
                 .addOnSuccessListener(new OnSuccessListener<ListResult>() {
                     @Override
                     public void onSuccess(ListResult listResult) {
                         GridView gridView = findViewById(R.id.grid_rooms);
-                        final GridListAdapter_album_detail adapter = new AlbumDetailActivity.GridListAdapter_album_detail();
+                        final GridListAdapter_album_detail adapter = new GridListAdapter_album_detail();
 
                         for (StorageReference prefix : listResult.getPrefixes()) {
                             // All the prefixes under listRef.
@@ -85,91 +80,21 @@ public class AlbumDetailActivity extends AppCompatActivity {                    
     @Override public void onBackPressed(){                                                          //뒤로가기 버튼 눌리면
         super.onBackPressed();
         moveTaskToBack(true);
-        gotoAlbumActivity(RKEY);
+        gotoMenuActivity();
     }
-    BottomNavigationView.OnNavigationItemSelectedListener navlistener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    switch (item.getItemId()){
-                        case R.id.nav_home:
-                            gotoRoomActivity(RKEY);
-                            return true;
-
-                        case R.id.nav_chat:
-                            gotoChatActivity();
-                            return true;
-
-                        case R.id.nav_menu:
-                            gotoMenuActivity(RKEY);
-                            return true;
-
-                        case R.id.nav_album:
-                            gotoAlbumActivity(RKEY);
-                            return true;
-
-                        case R.id.nav_member:
-                            gotoMemberActivity();
-                            return true;
-
-                    }
-                    return false;
-                }
-            };
-    private void gotoAlbumActivity(String room_key) {
-        Intent intent=new Intent(this,AlbumActivity.class);
-        intent.putExtra("room_key",room_key);
-        startActivity(intent);
-        AlbumDetailActivity.this.finish();
-    }
-    private void gotoPopupPicsActivity(String pic_id) {
-        Intent intent=new Intent(this,PopupPicsActivity.class);
-        intent.putExtra("room_key",RKEY);
-        intent.putExtra("album_key", AKEY);
+    private void gotoPopupPicsActivity(String pic_id){
+        Intent intent = new Intent(this, PopupPicsActivity.class);
+        intent.putExtra("room_key", KEY);
+        intent.putExtra("album_key", "concept");
         intent.putExtra("pic_id", pic_id);
         startActivityForResult(intent, 1);
     }
-    private void gotoRoomActivity(String room_key) {
-        Intent intent=new Intent(this,RoomActivity.class);
-        intent.putExtra("room_key",room_key);
-        startActivity(intent);
-        AlbumDetailActivity.this.finish();
-    }
-    private void gotoMenuActivity(String room_key) {
+    private void gotoMenuActivity() {
         Intent intent=new Intent(this,MenuActivity.class);
-        intent.putExtra("room_key",room_key);
+        intent.putExtra("room_key",KEY);
         startActivity(intent);
-        AlbumDetailActivity.this.finish();
+        ConceptShotActivity.this.finish();
     }
-    private void gotoChatActivity() {
-        Intent intent=new Intent(this,ChatActivity.class);
-        intent.putExtra("room_key",RKEY);
-        startActivity(intent);
-        AlbumDetailActivity.this.finish();
-    }
-    private void gotoMemberActivity() {
-        Intent intent=new Intent(this,MemberActivity.class);
-        intent.putExtra("room_key",RKEY);
-        startActivity(intent);
-        AlbumDetailActivity.this.finish();
-    }
-    private void gotoAlbumPicsActivity(String room_key, String album_key) {
-        Intent intent=new Intent(this,AlbumPicsActivity.class);
-        intent.putExtra("room_key",room_key);
-        intent.putExtra("album_key",album_key);
-        startActivity(intent);
-        AlbumDetailActivity.this.finish();
-    }
-    View.OnClickListener onClickListener = new View.OnClickListener(){
-        @Override
-        public  void onClick(View v){
-            switch (v.getId()){
-                case R.id.grp_crt_btn2:
-                    gotoAlbumPicsActivity(RKEY,AKEY);
-                    break;
-            }
-        }
-    };
     class GridListAdapter_album_detail extends BaseAdapter {
         ArrayList<StorageReference> items = new ArrayList<StorageReference>();
         Context context;                //어플맄케이션 정보를 담고있는 객체
@@ -204,12 +129,12 @@ public class AlbumDetailActivity extends AppCompatActivity {                    
                     public void onComplete(@NonNull Task<Uri> task) {
                         if (task.isSuccessful()) {
                             // Glide 이용하여 이미지뷰에 로딩
-                            Glide.with(AlbumDetailActivity.this)
+                            Glide.with(ConceptShotActivity.this)
                                     .load(task.getResult())
                                     .into(im);
                         } else {
                             // URL을 가져오지 못하면 토스트 메세지
-                            Toast.makeText(AlbumDetailActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ConceptShotActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

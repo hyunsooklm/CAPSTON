@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera2" />
 
     <application
         android:name=".GlobalApplication"
@@ -63,7 +66,16 @@
         <activity android:name=".MemberActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
 
         </activity>
+        <activity android:name=".RulletActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
+
+        </activity>
+        <activity android:name=".ConceptShotActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
+
+        </activity>
         <activity android:name=".PopupInviteActivity"  android:theme="@android:style/Theme.Dialog">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
+
+        </activity>
+        <activity android:name=".PopupPicsActivity"  android:theme="@android:style/Theme.Dialog">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
 
         </activity>
         <activity android:name=".StartActivity"> <!-- 첫 화면을 이걸로 지정한다!!! -->
