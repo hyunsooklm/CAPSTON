@@ -19,7 +19,8 @@
             android:layout_width="50dp"
             android:layout_height="150dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/background_btn" />
+            app:srcCompat="@drawable/background_btn"
+            android:background="@drawable/background_signup"/>
 
         <TextView
             android:id="@+id/replies_txt"
@@ -27,7 +28,8 @@
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:text="TextView"
-            android:textSize="16sp"
+            android:textSize="20sp"
+            android:gravity="center"
             android:fontFamily="@font/kyobohandwriting"/>
 
     </LinearLayout>
