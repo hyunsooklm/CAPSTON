@@ -78,6 +78,25 @@ public class PopupPicsActivity extends Activity {                               
                 }
             });
         }
+        else if(KEY.contains("qna_")){
+            String[] rkey = KEY.split("qna_");
+            StorageReference ref = FirebaseStorage.getInstance().getReference();
+            StorageReference pathReference = ref.child(rkey[1]+"/"+AKEY+"/" + PICID);
+            pathReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        // Glide 이용하여 이미지뷰에 로딩
+                        Glide.with(PopupPicsActivity.this)
+                                .load(task.getResult())
+                                .into(im);
+                    } else {
+                        // URL을 가져오지 못하면 토스트 메세지
+                        Toast.makeText(PopupPicsActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
         else{
             StorageReference ref = FirebaseStorage.getInstance().getReference();
             StorageReference pathReference = ref.child(KEY+"/"+AKEY+"/pics/" + PICID);
@@ -112,6 +131,26 @@ public class PopupPicsActivity extends Activity {                               
         if(AKEY.equals("concept")) {
             StorageReference ref = FirebaseStorage.getInstance().getReference();
             StorageReference pathReference = ref.child("conceptshot" + "/" + PICID);
+            File fdir = getExternalFilesDir(Environment.DIRECTORY_PICTURES + "download");
+            if (!fdir.isDirectory()) fdir.mkdir();
+            final File fdown = new File(fdir, PICID);
+            pathReference.getFile(fdown).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    // Local temp file has been created
+                    showToast("기기에 다운로드 성공!");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+        }
+        else if(KEY.contains("qna_")){
+            String[] rkey = KEY.split("qna_");
+            StorageReference ref = FirebaseStorage.getInstance().getReference();
+            StorageReference pathReference = ref.child(rkey[1]+"/"+AKEY+"/" + PICID);
             File fdir = getExternalFilesDir(Environment.DIRECTORY_PICTURES + "download");
             if (!fdir.isDirectory()) fdir.mkdir();
             final File fdown = new File(fdir, PICID);

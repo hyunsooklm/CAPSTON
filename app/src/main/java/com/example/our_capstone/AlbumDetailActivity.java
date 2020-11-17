@@ -44,6 +44,7 @@ public class AlbumDetailActivity extends AppCompatActivity {                    
         AKEY = intent.getExtras().getString("album_key");
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
+        bottomNavigationView.setSelectedItemId(R.id.nav_album);
         findViewById(R.id.grp_crt_btn2).setOnClickListener(onClickListener);
         /*그리드형식으로 사진들 보여주기*/
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -105,7 +106,7 @@ public class AlbumDetailActivity extends AppCompatActivity {                    
                             return true;
 
                         case R.id.nav_album:
-                            gotoAlbumActivity(RKEY);
+                            //gotoAlbumActivity(RKEY);
                             return true;
 
                         case R.id.nav_member:

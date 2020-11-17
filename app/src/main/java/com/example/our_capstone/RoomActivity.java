@@ -40,6 +40,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class RoomActivity  extends AppCompatActivity {                                   //메인클래스
     private static final String TAG = "AppCompatActivity";
@@ -77,6 +78,9 @@ public class RoomActivity  extends AppCompatActivity {                          
                     }
                     SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");                        //이름이 년월일로 생성
                     Date now = new Date();
+                    TimeZone timezone;
+                    timezone = TimeZone.getTimeZone("Asia/Seoul");
+                    formatter.setTimeZone(timezone);
                     if(!snapshot.getString("date").equals(formatter.format(now))){               //만약 오늘 게시물이 올라가지 않았다면(출첵형식으로 올림)
                         updtQna(snapshot.getLong("index").intValue());
                     }
@@ -216,6 +220,9 @@ public class RoomActivity  extends AppCompatActivity {                          
                                 Map<String, Object> our = new HashMap<>();
                                 SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
                                 Date now = new Date();
+                                TimeZone timezone;
+                                timezone = TimeZone.getTimeZone("Asia/Seoul");
+                                formatter.setTimeZone(timezone);
                                 our.put("title",formatter.format(now) + "_" + doc.getString("title"));
                                 our.put("content",doc.getString("content"));
                                 our.put("author","관리자");

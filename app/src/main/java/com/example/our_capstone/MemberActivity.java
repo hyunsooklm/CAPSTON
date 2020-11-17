@@ -87,7 +87,7 @@ public class MemberActivity extends AppCompatActivity {                         
                                         for (QueryDocumentSnapshot doc : value) {
                                             if (doc.getId() != null) {                              // 따온 정보들 그리드뷰에 넣어주기
                                                 Log.d(TAG, "Current data: " + doc.get("name").toString());
-                                                VoChatInfo chat = new VoChatInfo(doc.get("name").toString(),doc.get("birth").toString(),"VO");       //순서대로 name, content, date
+                                                VoChatInfo chat = new VoChatInfo(doc.get("name").toString(),doc.get("birth").toString(),"VO","123");       //순서대로 name, content, date
                                                 adapter.addChat(chat);
                                                 gridView.setAdapter(adapter);
                                             }
