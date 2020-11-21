@@ -3,6 +3,7 @@
     package="com.example.our_capstone">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -72,6 +73,12 @@
         <activity android:name=".ConceptShotActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
 
         </activity>
+        <activity android:name=".LateCheckActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
+
+        </activity>
+        <activity android:name=".MapActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
+
+        </activity>
         <activity android:name=".PopupInviteActivity"  android:theme="@android:style/Theme.Dialog">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
 
         </activity>
@@ -91,6 +98,12 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_geo_API_KEY"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
     </application>
 

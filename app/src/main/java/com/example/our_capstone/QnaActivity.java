@@ -179,7 +179,7 @@ public class QnaActivity extends AppCompatActivity {                            
         }
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            context = parent.getContext();
+            context = parent.getContext();;
             VoQnaInfo qna = qnas.get(position);
             if(convertView == null){
                 LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

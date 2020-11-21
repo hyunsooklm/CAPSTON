@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Our_capstone</string>
     <string name="kakao_app_key">9c1647b137ba68031169ce9ed107c8a3</string>
+    <string name="google_geo_API_KEY">AIzaSyC1g0lglU9FOflvK-DNbHN_LDnjp4AGE8A</string>
+
     <string name="zsw">친구의 이메일</string>
 </resources>
