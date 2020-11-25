@@ -14,16 +14,25 @@
         android:layout_weight="8">
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter the Address." />
+            android:hint="주소입력" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search" />
+            android:background="@drawable/background_btn"
+            android:text="검색" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="장소지정"
+            android:background="@drawable/background_btn"
+            android:layout_gravity="center"
+            android:id="@+id/set_location"
+            />
 
     </LinearLayout>
 

@@ -57,7 +57,7 @@ public class LateCheckActivity extends AppCompatActivity {
         add_promise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gotoMapActivity(KEY);
+                gotoSetPromiseActivity();
             }
         });
 
@@ -132,4 +132,11 @@ public class LateCheckActivity extends AppCompatActivity {
         startActivity(intent);
         LateCheckActivity.this.finish();
     }
+    private void gotoSetPromiseActivity() {
+        Intent intent=new Intent(this,SetPromiseActivity.class);
+        intent.putExtra("room_key",KEY);
+        startActivity(intent);
+        LateCheckActivity.this.finish();
+    }
+
 }

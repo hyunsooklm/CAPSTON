@@ -27,24 +27,39 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     private GoogleMap mMap;
     private Geocoder geocoder;
-    private Button button;
-    private EditText editText;
+    private Button search,set_location;
+    private EditText address;
+    private String location,lat,lon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        editText = (EditText) findViewById(R.id.editText);
-        button=(Button)findViewById(R.id.button);
+        address = (EditText) findViewById(R.id.address);
+        search=(Button)findViewById(R.id.search);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        set_location=findViewById(R.id.set_location);
+        set_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!location.isEmpty()){
+                    Intent intent=new Intent();
+                    intent.putExtra("location",location);
+                    intent.putExtra("lat",Double.parseDouble(lat));
+                    intent.putExtra("lon",Double.parseDouble(lon));
+                    setResult(RESULT_OK,intent);
+                    finish();
+                }
+            }
+        });
     }
 
 
-
+    
 /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -80,11 +95,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         ////////////////////
 
         // 버튼 이벤트
-        button.setOnClickListener(new Button.OnClickListener(){
+        search.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View v) {
-                String str = editText.getText().toString();
+                String str = address.getText().toString();
+                location=str;
                 List<Address> addressList = null;
+                mMap.clear();
+                if(location.isEmpty()) {
+                Toast.makeText(getApplicationContext(),"주소입력하세요.",Toast.LENGTH_LONG).show();
+                }else{
                 try {
                     // editText에 입력한 텍스트(주소, 지역, 장소 등)을 지오 코딩을 이용해 변환
                     addressList = geocoder.getFromLocationName(
@@ -93,8 +113,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if (addressList.size() < 1) { //주소변환가능할시
+                if (addressList.size() < 1) { //주소변환불가능할시
                     Toast.makeText(getApplicationContext(), "해당 주소정보는 없습니다.", Toast.LENGTH_LONG).show();
+                    str="";
                 } else {//불가능할시
                     System.out.println(addressList.get(0).toString());
                     // 콤마를 기준으로 split
@@ -106,7 +127,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     String longitude = splitStr[12].substring(splitStr[12].indexOf("=") + 1); // 경도
                     System.out.println(latitude);
                     System.out.println(longitude);
-
+                    lat=latitude;
+                    lon=longitude;
                     // 좌표(위도, 경도) 생성
                     LatLng point = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
                     // 마커 생성
@@ -118,7 +140,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     mMap.addMarker(mOptions2);
                     // 해당 좌표로 화면 줌
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
+                    Toast.makeText(getApplicationContext(),point.toString(),Toast.LENGTH_LONG).show();
                 }
+            }
             }
         });
         ////////////////////
