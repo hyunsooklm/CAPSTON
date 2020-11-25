@@ -157,6 +157,18 @@ public class SetPromiseActivity extends AppCompatActivity {
                         .setPositiveButton("확정", new DialogInterface.OnClickListener() { // 버튼은 테마에 따라서 모양이 다르게 모임
                             public void onClick(DialogInterface dialog, int whichButton) {
                                         Toast.makeText(getApplicationContext(),"참여자 수: "+attender.size(),Toast.LENGTH_LONG).show();
+                                        String text="";
+                                        for(Object mem:attender){
+                                            VoPromiseInfo.Member mem_one=(VoPromiseInfo.Member)mem;
+                                            String name=mem_one.get_name();
+                                            String birthday = "("+mem_one.get_birth().substring(0,2) + ")";
+                                            String attender_info=name+birthday;
+                                            text+=attender_info+",";
+                                        }
+                                        if(text.length()!=0) {
+                                            text=text.substring(0,text.length()-1); //마지막, cut}
+                                            set_member.setText(text);
+                                        }
                                 }})//확정 버튼을 눌렀을때
 
                         .setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -180,11 +192,9 @@ public class SetPromiseActivity extends AppCompatActivity {
                         if(cbGoLargeChecked.isChecked()){
                             mem.set_Selected(true); //mem을 체크박스오 ㅏ동일하게 check
                             attender.add(mem);
-                            Toast.makeText(getApplicationContext(),mem.get_name()+" 참여: "+mem.isSelected(),Toast.LENGTH_LONG).show();
                         }else{
                             mem.set_Selected(false);
                             attender.remove(mem);
-                            Toast.makeText(getApplicationContext(),mem.get_name()+" 참여: "+mem.isSelected(),Toast.LENGTH_LONG).show();
                         }
                     }
                 });
