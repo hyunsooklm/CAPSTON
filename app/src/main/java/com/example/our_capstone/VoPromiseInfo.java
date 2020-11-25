@@ -41,13 +41,16 @@ public class VoPromiseInfo {
    static class Member{
         String name;
         String birth;
+        boolean isSelected;
         Member(){
         name="";
         birth="";
+        isSelected=false;
         }
        Member(String name,String birth){
            this.name=name;
            this.birth=birth;
+           this.isSelected=false;
        }
        public void set_name(String name){
             this.name=name;
@@ -55,9 +58,11 @@ public class VoPromiseInfo {
        public void set_birth(String birth){
            this.birth=birth;
        }
+       public void set_Selected(boolean is_Selected){this.isSelected=is_Selected;}
        public String get_name(){return this.name;}
        public String get_birth(){return this.birth;}
-
-
+       public boolean isSelected() {
+            return this.isSelected;
+       }
    }
 }
