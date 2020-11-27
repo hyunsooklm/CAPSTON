@@ -1,11 +1,15 @@
 package com.example.our_capstone;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class VoPromiseInfo {
+public class VoPromiseInfo implements Serializable {
    private Calendar date_time;
    private String location;
    private Double lat,lon;
@@ -38,7 +42,17 @@ public class VoPromiseInfo {
    protected ArrayList get_attender(){return this.attender;}
    protected ArrayList get_late_comer(){return this.late_comer;}
 
-   static class Member{
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        return super.equals(obj);
+    }
+
+    @NonNull
+    @Override
+    public String toString() { return "날짜: "+this.date_time.toString()+"장소:"+location;}
+
+    static class Member{
         String name;
         String birth;
         boolean isSelected;

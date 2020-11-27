@@ -22,18 +22,23 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,16 +46,20 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SetPromiseActivity extends AppCompatActivity {
     static final int REQ_ADD_CONTACT = 1;
     String TAG = "";
-    Button set_time, set_date, set_location, set_member;
+    Button set_time, set_date, set_location, set_member,add_promise;
     int y = 0, m = 0, d = 0, h = 0, mi = 0;
     List Room_member;   //방 전체멤버
     List attender; //참가자
@@ -68,13 +77,17 @@ public class SetPromiseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setpromise);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
         Intent intent = getIntent();    //데이터 수신
+
         voPromiseInfo = new VoPromiseInfo(); //약속객체
         Room_member = voPromiseInfo.VO_mem(); //방 전체 멤버
         attender = voPromiseInfo.get_attender(); //그 중 참가자들
         date_time = voPromiseInfo.get_date_time();
         String room_key = intent.getExtras().getString("room_key");
         KEY = room_key;
+
         current = Calendar.getInstance();
         set_date = findViewById(R.id.setdate);
         set_date.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +109,32 @@ public class SetPromiseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 gotoMapActivity(KEY);
+            }
+        });
+
+        add_promise=(Button)findViewById(R.id.add_promise);
+        add_promise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String date= (String)set_date.getText();
+                String time=(String)set_time.getText();
+                String attender=(String)set_member.getText();
+                String location=(String)set_location.getText();
+                if(date.equals("날짜설정")) {
+                    Toast.makeText(getApplicationContext(), "날짜설정요망", Toast.LENGTH_LONG).show();
+                }
+                else if(time.equals("시간설정")) {
+                    Toast.makeText(getApplicationContext(), "시간설정요망", Toast.LENGTH_LONG).show();
+                }
+                else if(attender.equals("멤버설정"))
+                    Toast.makeText(getApplicationContext(),"멤버설정요망",Toast.LENGTH_LONG).show();
+                else if(location.equals("장소설정"))
+                    Toast.makeText(getApplicationContext(),"장소설정요망",Toast.LENGTH_LONG).show();      //하나라도 설정 안되었을경우
+                else{
+                    //Toast.makeText(getApplicationContext(),voPromiseInfo.get_date_time().toString(),Toast.LENGTH_LONG).show();      //하나라도 설정 안되었을경우
+                    apply(voPromiseInfo);
+                    gotoLateCheckActivity(KEY);
+                }
             }
         });
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -263,9 +302,9 @@ public class SetPromiseActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) { //확인눌렀을때
                 date_time.set(Calendar.YEAR, year);
-                date_time.set(Calendar.MONTH, month + 1);
+                date_time.set(Calendar.MONTH, month);
                 date_time.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                set_date.setText(date_time.get(Calendar.YEAR) + "년 " + (date_time.get(Calendar.MONTH))
+                set_date.setText(date_time.get(Calendar.YEAR) + "년 " + (date_time.get(Calendar.MONTH)+1)
                         + "월 " + date_time.get(Calendar.DAY_OF_MONTH) + "일");
             }
         }, current.get(current.YEAR), current.get(current.MONTH), current.get(current.DATE));
@@ -304,6 +343,12 @@ public class SetPromiseActivity extends AppCompatActivity {
         SetPromiseActivity.this.finish();
     }
 
+    private void gotoLateCheckActivity(String room_key) {
+        Intent intent = new Intent(this, LateCheckActivity.class);
+        intent.putExtra("room_key", room_key);
+        startActivity(intent);
+        SetPromiseActivity.this.finish();
+    }
     private void gotoMenuActivity(String room_key) {
         Intent intent = new Intent(this, MenuActivity.class);
         intent.putExtra("room_key", room_key);
@@ -332,8 +377,31 @@ public class SetPromiseActivity extends AppCompatActivity {
         SetPromiseActivity.this.finish();
     }
 
-    public void CheckboxClick(View view) {
-
+    private void apply(VoPromiseInfo voPromiseInfo) {
+            Map<String, Object> promise = new HashMap<>();
+            SimpleDateFormat day_formatter = new SimpleDateFormat("yyyyMMdd"); //날짜
+            promise.put("Date",day_formatter.format(voPromiseInfo.get_date_time().getTime()));
+            SimpleDateFormat time_formatter = new SimpleDateFormat("HH:mm"); //시간
+            promise.put("Time",time_formatter.format(voPromiseInfo.get_date_time().getTime()));
+            promise.put("Location",voPromiseInfo.get_location());//장소
+            promise.put("lat",voPromiseInfo.get_lat()); //위도
+            promise.put("lon",voPromiseInfo.get_lon()); //경도
+            promise.put("attender",voPromiseInfo.get_attender()); //참가자
+            promise.put("Later",voPromiseInfo.get_late_comer()); //지각자
+        FirebaseFirestore db = FirebaseFirestore.getInstance();                                     //파이어베이스의 firestore (DB) 인스턴스 초기화
+            db.collection("rooms").document(KEY).collection("promise")
+                    .add(promise)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                             Toast.makeText(getApplicationContext(),"컬렉션생성",Toast.LENGTH_LONG).show();
+                        }})
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(),"컬렉션생성실패",Toast.LENGTH_LONG).show();
+                        }
+                    });
     }
 
 
@@ -389,8 +457,6 @@ public class SetPromiseActivity extends AppCompatActivity {
                     }
                 }//체크박스 선택했을때
             });
-
-           // cbProductChecked.setChecked(cbProductChecked.isChecked());
             String birthday = mem_one.get_birth() + "";
             birthday = birthday.substring(2);
             nm.setText(mem_one.get_name() + "");                                                          //멤버의 이름
