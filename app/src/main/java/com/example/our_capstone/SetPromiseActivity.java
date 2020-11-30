@@ -390,18 +390,7 @@ public class SetPromiseActivity extends AppCompatActivity {
             promise.put("Later",voPromiseInfo.get_late_comer()); //지각자
         FirebaseFirestore db = FirebaseFirestore.getInstance();                                     //파이어베이스의 firestore (DB) 인스턴스 초기화
             db.collection("rooms").document(KEY).collection("promise")
-                    .add(promise)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                             Toast.makeText(getApplicationContext(),"컬렉션생성",Toast.LENGTH_LONG).show();
-                        }})
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getApplicationContext(),"컬렉션생성실패",Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    .add(promise);
     }
 
 

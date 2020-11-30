@@ -52,7 +52,7 @@ public class VoPromiseInfo implements Serializable {
     @Override
     public String toString() { return "날짜: "+this.date_time.toString()+"장소:"+location;}
 
-    static class Member{
+    static class Member implements Serializable{
         String name;
         String birth;
         boolean isSelected;

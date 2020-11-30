@@ -96,7 +96,7 @@ public class LateCheckActivity extends AppCompatActivity {
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {          //해당 영역 클릭시 이동하게해줌
                                  VoPromiseInfo promise = (VoPromiseInfo)adapter.getItem(position);
                                   Toast.makeText(getApplicationContext(),promise.get_location(),Toast.LENGTH_LONG).show();
-                                //gotoQnaDetailActivity(qna);
+                                  gotoPromiseDetail(promise);
                             }
                         });
                     }
@@ -171,12 +171,6 @@ public class LateCheckActivity extends AppCompatActivity {
                     return false;
                 }
             };
-    private void gotoMapActivity(String room_key) {
-        Intent intent=new Intent(this,MapActivity.class);
-        intent.putExtra("room_key",room_key);
-        startActivity(intent);
-        LateCheckActivity.this.finish();
-    }
     private void gotoRoomActivity(String room_key) {
         Intent intent=new Intent(this,RoomActivity.class);
         intent.putExtra("room_key",room_key);
@@ -213,7 +207,14 @@ public class LateCheckActivity extends AppCompatActivity {
         startActivity(intent);
         LateCheckActivity.this.finish();
     }
-    private VoPromiseInfo make_promise(String date,String Time,String location,Double lon,Double lat,ArrayList attender,ArrayList later){
+    private void gotoPromiseDetail(VoPromiseInfo promise) {
+        Intent intent=new Intent(this,PromiseDetailActivity.class);
+        intent.putExtra("room_key",KEY);
+        intent.putExtra("promise",promise);
+        startActivity(intent);
+        LateCheckActivity.this.finish();
+    }
+    private VoPromiseInfo make_promise(String date,String Time,String location,Double lon,Double lat,ArrayList<VoPromiseInfo.Member> attender,ArrayList<VoPromiseInfo.Member> later){
         final int _year=2; final int _month=4;
         Calendar calendar=Calendar.getInstance();
         //201220

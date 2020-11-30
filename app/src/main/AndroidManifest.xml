@@ -67,6 +67,8 @@
 
         <activity android:name=".SetPromiseActivity">
         </activity>
+        <activity android:name=".PromiseDetailActivity">
+        </activity>
 
         <activity android:name=".MemberActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
         </activity>
