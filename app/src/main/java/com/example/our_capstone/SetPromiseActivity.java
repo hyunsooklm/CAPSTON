@@ -175,8 +175,6 @@ public class SetPromiseActivity extends AppCompatActivity {
                                                         Log.d(TAG, "Current data: " + name);
                                                         VoPromiseInfo.Member mem = new VoPromiseInfo.Member(name, doc.get("birth").toString());       //순서대로 name, content, date
                                                         Room_member.add(mem);
-//                                                        adapter.add_mem(mem);
-                                                        //gridView.setAdapter(adapter);
                                                     }
                                                 }
                                             }
@@ -201,8 +199,6 @@ public class SetPromiseActivity extends AppCompatActivity {
                                         for(Object mem:attender){
                                             VoPromiseInfo.Member mem_one=(VoPromiseInfo.Member)mem;
                                             String name=mem_one.get_name();
-                                           // String birthday = "("+mem_one.get_birth().substring(0,2) + ")";
-                                           // String attender_info=name;
                                             text+=name+",";
                                         }
                                         if(text.length()!=0) {

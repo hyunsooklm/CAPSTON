@@ -173,5 +173,34 @@
         app:layout_constraintTop_toBottomOf="@+id/member"
         app:layout_constraintVertical_bias="0.668" />
 
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="316dp"
+        android:background="@drawable/background_btn"
+        android:fontFamily="@font/kyobohandwriting"
+        android:text="삭제"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.765"
+        app:layout_constraintStart_toEndOf="@+id/setdate"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+        app:layout_constraintVertical_bias="0.863" />
+
+    <Button
+        android:id="@+id/modify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_btn"
+        android:fontFamily="@font/kyobohandwriting"
+        android:text="수정"
+        app:layout_constraintBottom_toTopOf="@+id/delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.765"
+        app:layout_constraintStart_toEndOf="@+id/setdate"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+        app:layout_constraintVertical_bias="0.703" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

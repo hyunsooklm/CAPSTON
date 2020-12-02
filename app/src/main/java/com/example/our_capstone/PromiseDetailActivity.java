@@ -2,6 +2,7 @@ package com.example.our_capstone;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -40,7 +42,7 @@ public class PromiseDetailActivity extends AppCompatActivity {
     String KEY;
     String PROMISE_KEY;
     Calendar current,date_time;
-    Button set_time, set_date, set_location,arrive_button;
+    Button set_time, set_date, set_location,arrive_button,delete,modify;
     TextView distance_view,later_list;
     LocationManager lm;
     VoPromiseInfo promise;
@@ -72,6 +74,9 @@ public class PromiseDetailActivity extends AppCompatActivity {
             arrive_button = (Button) findViewById(R.id.arrive_button);
             later_list = (TextView) findViewById(R.id.later_list);
             distance_view = (TextView) findViewById(R.id.distance);
+            delete=(Button)findViewById(R.id.delete);
+            modify=(Button)findViewById(R.id.modify);
+
 //-----------------------------------------------------------------
             current = Calendar.getInstance();
             set_date = findViewById(R.id.setdate);
@@ -116,6 +121,8 @@ public class PromiseDetailActivity extends AppCompatActivity {
             else {
                     arrive_button.setVisibility(View.GONE);
                     distance_view.setVisibility(View.GONE);
+                    delete.setVisibility(View.GONE);
+                    modify.setVisibility(View.GONE);
                     later_list.setVisibility(View.VISIBLE);
                     String late_list=later_list.getText().toString();
                     for(HashMap mem:later){
@@ -129,6 +136,18 @@ public class PromiseDetailActivity extends AppCompatActivity {
                         later_list.setText("지각자 없음!");
             }//약속시간 이후
 //-----------------------------------------------------------------------------약속시간 전 후, 거리계산+지각자리스트 나타내기
+
+//-----------------------------------------------------------------------------약속삭제
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delete_dialog(v);
+            }
+        });
+
+
+
+//-----------------------------------------------------------------------------약속수정
             if (Build.VERSION.SDK_INT >= 23 &&
                     ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(PromiseDetailActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
@@ -212,6 +231,12 @@ public class PromiseDetailActivity extends AppCompatActivity {
         startActivity(intent);
         PromiseDetailActivity.this.finish();
     }
+    private void gotoLateCheckActivity(String room_key) {
+        Intent intent = new Intent(this, LateCheckActivity.class);
+        intent.putExtra("room_key", room_key);
+        startActivity(intent);
+        PromiseDetailActivity.this.finish();
+    }
     private float calculate_distance(Double user_lon,Double user_lat){  //view에 거리나타내주고, 거리반환
         Location user_location = new Location("user_point");
         user_location.setLatitude(user_lat);
@@ -266,7 +291,38 @@ public class PromiseDetailActivity extends AppCompatActivity {
             }
         });
     }
-//------------------------------------------------------------------------------------------------later객체에서 뺴주고, db에 반영
+    //---------------------------------------------------------------------------------제시각에 도착한 사람 지각자 명단에서 빼주기
+    public void delete_dialog(View view){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final DocumentReference promise_Ref =db.collection("rooms").document(KEY).collection("promise").document(PROMISE_KEY);
+            AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(PromiseDetailActivity.this);
+            // alert의 title과 Messege 세팅
+            myAlertBuilder.setTitle("삭제");
+            myAlertBuilder.setMessage("삭제하시겠습니까?");
+            // 버튼 추가 (Ok 버튼과 Cancle 버튼 )
+            myAlertBuilder.setPositiveButton("예",new DialogInterface.OnClickListener(){
+                public void onClick(DialogInterface dialog,int which){
+                    // OK 버튼을 눌렸을 경우
+                    promise_Ref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getApplicationContext(),"삭제되었습니다.",Toast.LENGTH_LONG).show();
+                            gotoLateCheckActivity(KEY);
+                        }
+                    });
+                }
+            });
+            myAlertBuilder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Cancle 버튼을 눌렸을 경우
+
+                }
+            });
+            // Alert를 생성해주고 보여주는 메소드(show를 선언해야 Alert가 생성됨)
+            myAlertBuilder.show();
+        }
+//------------------------------------------------------------------------------------------------약속 삭제
     public Location getLocation() {
         Location location=null;
         try {
