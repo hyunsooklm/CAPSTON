@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {                           
             findViewById(R.id.logout_btn).setOnClickListener(onClickListener);
             findViewById(R.id.grp_crt_btn).setOnClickListener(onClickListener);
 
-
             db.collection("rooms")
                     .whereArrayContains("users", user.getEmail())
                     .addSnapshotListener(new EventListener<QuerySnapshot>() {

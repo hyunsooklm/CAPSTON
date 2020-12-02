@@ -73,7 +73,7 @@ public class LateCheckActivity extends AppCompatActivity {
                                 Log.d(TAG,(String)doc.get("Date")+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                 VoPromiseInfo promise=make_promise(doc.get("Date").toString(),doc.get("Time").toString(),doc.get("Location").toString(),
                                         (Double)doc.get("lon"),(Double)doc.get("lat"),
-                                        (ArrayList)doc.get("attender"),(ArrayList)doc.get("Later"));
+                                        (ArrayList)doc.get("attender"),(ArrayList)doc.get("Later"),doc.getId());
                                 try {
                                     if(yet_promise_day(promise.get_date_time())) //약속당일 아직 안되었을경우
                                     adapter.addpromise(promise); //약속리스트에서 보여준다.
@@ -214,7 +214,7 @@ public class LateCheckActivity extends AppCompatActivity {
         startActivity(intent);
         LateCheckActivity.this.finish();
     }
-    private VoPromiseInfo make_promise(String date,String Time,String location,Double lon,Double lat,ArrayList<VoPromiseInfo.Member> attender,ArrayList<VoPromiseInfo.Member> later){
+    private VoPromiseInfo make_promise(String date,String Time,String location,Double lon,Double lat,ArrayList<VoPromiseInfo.Member> attender,ArrayList<VoPromiseInfo.Member> later,String key){
         final int _year=2; final int _month=4;
         Calendar calendar=Calendar.getInstance();
         //201220
@@ -234,7 +234,7 @@ public class LateCheckActivity extends AppCompatActivity {
         int mm=Integer.parseInt(Time.substring(3));
         calendar.set(Calendar.HOUR_OF_DAY, hh);
         calendar.set(Calendar.MINUTE, mm);
-        return new VoPromiseInfo(calendar,location,lon,lat,attender,later);
+        return new VoPromiseInfo(calendar,location,key,lon,lat,attender,later);
     }
 
     class GridListAdapter_qna extends BaseAdapter {

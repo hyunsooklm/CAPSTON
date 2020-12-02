@@ -63,7 +63,7 @@ public class SetPromiseActivity extends AppCompatActivity {
     int y = 0, m = 0, d = 0, h = 0, mi = 0;
     List Room_member;   //방 전체멤버
     List attender; //참가자
-
+    List later;
     private String KEY;
     String location;
     Double lon, lat;
@@ -84,6 +84,7 @@ public class SetPromiseActivity extends AppCompatActivity {
         voPromiseInfo = new VoPromiseInfo(); //약속객체
         Room_member = voPromiseInfo.VO_mem(); //방 전체 멤버
         attender = voPromiseInfo.get_attender(); //그 중 참가자들
+        later=voPromiseInfo.get_late_comer(); //그 중 지각자들
         date_time = voPromiseInfo.get_date_time();
         String room_key = intent.getExtras().getString("room_key");
         KEY = room_key;
@@ -200,9 +201,9 @@ public class SetPromiseActivity extends AppCompatActivity {
                                         for(Object mem:attender){
                                             VoPromiseInfo.Member mem_one=(VoPromiseInfo.Member)mem;
                                             String name=mem_one.get_name();
-                                            String birthday = "("+mem_one.get_birth().substring(0,2) + ")";
-                                            String attender_info=name+birthday;
-                                            text+=attender_info+",";
+                                           // String birthday = "("+mem_one.get_birth().substring(0,2) + ")";
+                                           // String attender_info=name;
+                                            text+=name+",";
                                         }
                                         if(text.length()!=0) {
                                             text=text.substring(0,text.length()-1); //마지막, cut}
@@ -231,9 +232,11 @@ public class SetPromiseActivity extends AppCompatActivity {
                         if(cbGoLargeChecked.isChecked()){
                             mem.set_Selected(true); //mem을 체크박스오 ㅏ동일하게 check
                             attender.add(mem);
+                            later.add(mem);
                         }else{
                             mem.set_Selected(false);
                             attender.remove(mem);
+                            later.remove(mem);
                         }
                     }
                 });
@@ -388,9 +391,13 @@ public class SetPromiseActivity extends AppCompatActivity {
             promise.put("lon",voPromiseInfo.get_lon()); //경도
             promise.put("attender",voPromiseInfo.get_attender()); //참가자
             promise.put("Later",voPromiseInfo.get_late_comer()); //지각자
-        FirebaseFirestore db = FirebaseFirestore.getInstance();                                     //파이어베이스의 firestore (DB) 인스턴스 초기화
-            db.collection("rooms").document(KEY).collection("promise")
-                    .add(promise);
+            FirebaseFirestore db = FirebaseFirestore.getInstance();//파이어베이스의 firestore (DB) 인스턴스 초기화
+            DocumentReference Promise_Ref=db.collection("rooms").document(KEY).collection("promise").document();
+            String key=Promise_Ref.getId(); //promise문서 키가져와서
+            voPromiseInfo.set_key(key); //객체에 저장해주고
+            promise.put("key",voPromiseInfo.get_key());//promise 방 키
+            Promise_Ref.set(promise); //promise객체 파베에 추가
+
     }
 
 
@@ -440,9 +447,11 @@ public class SetPromiseActivity extends AppCompatActivity {
                     if(cbProductChecked.isChecked()){
                         mem_one.set_Selected(cbProductChecked.isChecked());
                         attender.add(mem_one);
+                        later.add(mem_one);
                     }else{
                         mem_one.set_Selected((cbProductChecked.isChecked()));
                         attender.remove(mem_one);
+                        later.remove(mem_one);
                     }
                 }//체크박스 선택했을때
             });

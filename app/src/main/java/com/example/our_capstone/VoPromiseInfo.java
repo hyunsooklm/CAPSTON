@@ -15,19 +15,20 @@ public class VoPromiseInfo implements Serializable {
    private Double lat,lon;
    private ArrayList attender;
    private ArrayList late_comer = new ArrayList();
-
+   private String key;
     VoPromiseInfo(){
         date_time=Calendar.getInstance();
         attender = new ArrayList<Member>();
         late_comer = new ArrayList();
     }
-   VoPromiseInfo(Calendar date_time,String location,Double lon,Double lat,ArrayList attender,ArrayList late_comer){
+   VoPromiseInfo(Calendar date_time,String location,String key,Double lon,Double lat,ArrayList attender,ArrayList late_comer){
        this.date_time=date_time;
        this.location=location;
        this.lon=lon;
        this.lat=lat;
        this.attender=attender;
        this.late_comer=late_comer;
+       this.key=key;
    }
    List<Member> VO_mem(){return new ArrayList<Member>();} //방 전체 멤버리스트
    protected void set_date_time(Calendar date_time){this.date_time=date_time;}
@@ -35,8 +36,10 @@ public class VoPromiseInfo implements Serializable {
    protected void set_location(String location){this.location=location;}
    protected void set_attender(ArrayList attender){this.attender=attender;}
    protected void set_late_comer(ArrayList late_comer){ this.late_comer=late_comer;}
+   protected void set_key(String key){this.key=key;}
    protected Calendar get_date_time(){return this.date_time;}
    protected String get_location(){return this.location;}
+   protected String get_key(){return this.key;}
    protected Double get_lat(){return this.lat;}
    protected Double get_lon(){return this.lon;}
    protected ArrayList get_attender(){return this.attender;}

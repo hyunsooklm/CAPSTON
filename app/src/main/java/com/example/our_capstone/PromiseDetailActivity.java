@@ -1,5 +1,6 @@
 package com.example.our_capstone;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,164 +22,158 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class PromiseDetailActivity extends AppCompatActivity {
     private static final String TAG = "hyunsoo";
-    Intent intent = new Intent();
     String KEY;
-    Calendar current;
-    Button set_time, set_date, set_location;
-    TextView distance_view;
+    String PROMISE_KEY;
+    Calendar current,date_time;
+    Button set_time, set_date, set_location,arrive_button;
+    TextView distance_view,later_list;
     LocationManager lm;
     VoPromiseInfo promise;
-    double distance;
+    float distance;
+    List<HashMap> later;
+    FirebaseUser user;
+    Double user_lon,user_lat;
+    int limit_distance=2000;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_promise_detail);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
-        Intent intent = getIntent();    //데이터 수신
-        promise= (VoPromiseInfo) intent.getSerializableExtra("promise");
-        Toast.makeText(getApplicationContext(),promise.get_attender().get(0).getClass().getName()+"-"+promise.get_attender().get(0),Toast.LENGTH_LONG).show();
-        Log.d(TAG,promise.get_attender().get(0).getClass().getName()+"-"+promise.get_attender().get(0)+"!!!!!!!!!!!!!!!!!!!!!!!!");
-        String room_key = intent.getExtras().getString("room_key");
-        KEY = room_key;
-        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        current = Calendar.getInstance();
-        set_date = findViewById(R.id.setdate);
-        Calendar date_time=promise.get_date_time();
-        set_date.setText(date_time.get(Calendar.YEAR) + "년 " + (date_time.get(Calendar.MONTH)+1)
-                + "월 " + date_time.get(Calendar.DAY_OF_MONTH) + "일");
-
-        set_time=findViewById(R.id.settime);
-        int hh=date_time.get(Calendar.HOUR_OF_DAY);
-        int mm=date_time.get(Calendar.MINUTE);
-        if (mm == 0)
-            set_time.setText(hh + ":" + "00");
-        else
-            set_time.setText(hh + ": " + mm);
-
-        set_location=findViewById(R.id.setlocation);
-        set_location.setText(promise.get_location());
-
-        Button set_member=findViewById(R.id.member);
-        List<HashMap> attender=promise.get_attender();
-        String text="";
-        for(HashMap mem:attender){
-            String name=(String)mem.get("_name");
-            String birthday = "("+((String)mem.get("_birth")).substring(0,2) + ")";
-            String attender_info=name+birthday;
-            text+=attender_info+",";
+        user = FirebaseAuth.getInstance().getCurrentUser();                //파이어베이스의 인증 (회원관리) 이용해서 로그인정보 가져오기
+        if (user == null) {                                                             //현재 상태가 로그인된 상태가 아니라면
+            Log.d(TAG, "로그인된상태가아니야??");                                                       //로그인창으로 이동하기
         }
-            text=text.substring(0,text.length()-1); //마지막, cut}
+            BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+            bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
+            Intent intent = getIntent();    //데이터 수신
+            promise = (VoPromiseInfo) intent.getSerializableExtra("promise");
+            later = promise.get_late_comer();
+            PROMISE_KEY = promise.get_key();
+            Toast.makeText(getApplicationContext(), promise.get_attender().get(0).getClass().getName() + "-" + promise.get_attender().get(0), Toast.LENGTH_LONG).show();
+            Log.d(TAG, promise.get_attender().get(0).getClass().getName() + "-" + promise.get_attender().get(0) + "!!!!!!!!!!!!!!!!!!!!!!!!");
+            String room_key = intent.getExtras().getString("room_key");
+            KEY = room_key;
+            lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            arrive_button = (Button) findViewById(R.id.arrive_button);
+            later_list = (TextView) findViewById(R.id.later_list);
+            distance_view = (TextView) findViewById(R.id.distance);
+//-----------------------------------------------------------------
+            current = Calendar.getInstance();
+            set_date = findViewById(R.id.setdate);
+            date_time = promise.get_date_time();
+            set_date.setText(date_time.get(Calendar.YEAR) + "년 " + (date_time.get(Calendar.MONTH) + 1)
+                    + "월 " + date_time.get(Calendar.DAY_OF_MONTH) + "일");
+
+            set_time = findViewById(R.id.settime);
+            int hh = date_time.get(Calendar.HOUR_OF_DAY);
+            int mm = date_time.get(Calendar.MINUTE);
+            if (mm == 0)
+                set_time.setText(hh + ":" + "00");
+            else
+                set_time.setText(hh + ": " + mm);
+
+            set_location = findViewById(R.id.setlocation);
+            set_location.setText(promise.get_location());
+//----------------------------------------------------------------- //날짜나타내기
+            Button set_member = findViewById(R.id.member);
+            List<HashMap> attender = promise.get_attender();
+            String text = "";
+            for (HashMap mem : attender) {
+                String name = (String) mem.get("_name");
+                text += name + ",";
+            }
+            text = text.substring(0, text.length() - 1); //마지막, cut}
             set_member.setText(text);
-//        set_date.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showDate();
-//            }
-//        });
-//        set_time = findViewById(R.id.settime);
-//        set_time.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                showTime();
-//            }
-//        });
-//        set_location = findViewById(R.id.setlocation);
-//        set_location.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                gotoMapActivity(KEY);
-//            }
-//        });
-//
-//        add_promise = (Button) findViewById(R.id.add_promise);
-//        add_promise.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String date = (String) set_date.getText();
-//                String time = (String) set_time.getText();
-//                String attender = (String) set_member.getText();
-//                String location = (String) set_location.getText();
-//                if (date.equals("날짜설정")) {
-//                    Toast.makeText(getApplicationContext(), "날짜설정요망", Toast.LENGTH_LONG).show();
-//                } else if (time.equals("시간설정")) {
-//                    Toast.makeText(getApplicationContext(), "시간설정요망", Toast.LENGTH_LONG).show();
-//                } else if (attender.equals("멤버설정"))
-//                    Toast.makeText(getApplicationContext(), "멤버설정요망", Toast.LENGTH_LONG).show();
-//                else if (location.equals("장소설정"))
-//                    Toast.makeText(getApplicationContext(), "장소설정요망", Toast.LENGTH_LONG).show();      //하나라도 설정 안되었을경우
-//                else {
-//                    //Toast.makeText(getApplicationContext(),voPromiseInfo.get_date_time().toString(),Toast.LENGTH_LONG).show();      //하나라도 설정 안되었을경우
-//                    apply(voPromiseInfo);
-//                    gotoLateCheckActivity(KEY);
-//                }
-//            }
-//        });
-        if (Build.VERSION.SDK_INT >= 23 &&
-                ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-            ActivityCompat.requestPermissions( PromiseDetailActivity.this, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
-                    0 );
-        }
-        else{
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            String provider = location.getProvider();
-            double longitude = location.getLongitude();
-            double latitude = location.getLatitude();
-            double altitude = location.getAltitude();
+//-----------------------------------------------------------------//member 나타내기
 
-//            txtResult.setText("위치정보 : " + provider + "\n" +
-//                    "위도 : " + longitude + "\n" +
-//                    "경도 : " + latitude + "\n" +
-//                    "고도  : " + altitude);
-            distance_view=(TextView)findViewById(R.id.distance);
-            calculate_distance(longitude,latitude);
-            Log.d(TAG,"longitude: "+longitude+"latitude: "+latitude);
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
-        }
-    }
-
-    BottomNavigationView.OnNavigationItemSelectedListener navlistener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.nav_home:
-                            gotoRoomActivity(KEY);
-                            return true;
-
-                        case R.id.nav_chat:
-                            gotoChatActivity(KEY);
-                            return true;
-
-                        case R.id.nav_menu:
-                            gotoMenuActivity(KEY);
-                            return true;
-
-                        case R.id.nav_album:
-                            gotoAlbumActivity(KEY);
-                            return true;
-
-                        case R.id.nav_member:
-                            gotoMemberActivity();
-                            return true;
-
+            if (before_promisetime()) { //약속시간전
+                arrive_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (calculate_distance(user_lon, user_lat) < limit_distance) { //도착!
+                            out_from_later();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "도착전", Toast.LENGTH_LONG).show();
+                        }
                     }
-                    return false;
-                }
-            };
+                });
+            }   //약속시간 전 도착버튼 누르면 later리스트에서 사라짐
+            else {
+                    arrive_button.setVisibility(View.GONE);
+                    distance_view.setVisibility(View.GONE);
+                    later_list.setVisibility(View.VISIBLE);
+                    String late_list=later_list.getText().toString();
+                    for(HashMap mem:later){
+                        late_list+=mem.get("_name")+",";
+                    }
+                    if(later.size()>0){ //지각자 한명이라도 있을경우
+                        late_list=late_list.substring(0,late_list.length()-1);
+                        later_list.setText(late_list);
+                    }
+                    else
+                        later_list.setText("지각자 없음!");
+            }//약속시간 이후
+//-----------------------------------------------------------------------------약속시간 전 후, 거리계산+지각자리스트 나타내기
+            if (Build.VERSION.SDK_INT >= 23 &&
+                    ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(PromiseDetailActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        0);
+            } else {
+                Location location = getLocation();
+                user_lon = location.getLongitude();
+                user_lat = location.getLatitude();
+                double altitude = location.getAltitude();
+                calculate_distance(user_lon, user_lat);
+                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
+                lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
+            }
+        }
+//---------------------------------------------------------------------------------activity 켤때, 거리계산(최초)
+        BottomNavigationView.OnNavigationItemSelectedListener navlistener =
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.nav_home:
+                                gotoRoomActivity(KEY);
+                                return true;
+
+                            case R.id.nav_chat:
+                                gotoChatActivity(KEY);
+                                return true;
+
+                            case R.id.nav_menu:
+                                gotoMenuActivity(KEY);
+                                return true;
+
+                            case R.id.nav_album:
+                                gotoAlbumActivity(KEY);
+                                return true;
+
+                            case R.id.nav_member:
+                                gotoMemberActivity();
+                                return true;
+
+                        }
+                        return false;
+                    }
+                };
+    //------------------------------------------------------------------------navigation
     @Override
     public void onBackPressed() {                                                          //뒤로가기 버튼 눌리면
         super.onBackPressed();
@@ -216,7 +212,7 @@ public class PromiseDetailActivity extends AppCompatActivity {
         startActivity(intent);
         PromiseDetailActivity.this.finish();
     }
-    private void calculate_distance(Double user_lon,Double user_lat){
+    private float calculate_distance(Double user_lon,Double user_lat){  //view에 거리나타내주고, 거리반환
         Location user_location = new Location("user_point");
         user_location.setLatitude(user_lat);
         user_location.setLongitude(user_lon);
@@ -229,25 +225,102 @@ public class PromiseDetailActivity extends AppCompatActivity {
         format.applyLocalizedPattern("0.0");
         Log.d(TAG,"목적지로부터 거리"+distance+"M");
         if(distance>=1000){
-            distance=distance/1000;
-            distance_view.setText("목적지로부터 거리"+format.format(distance)+"km");
+            float distance_km=distance/1000;
+            distance_view.setText("목적지로부터 거리"+format.format(distance_km)+"km");
         }//1km변환
         else{
             distance_view.setText("목적지로부터 거리"+format.format(distance)+"m");
         }
+        return distance;
     }
+//------------------------------------------------------------------------------거리계산함수
+    private boolean before_promisetime(){
+        if(current.after(this.date_time))
+            return false;
+        else
+            return true;
+    }
+//------------------------------------------------------------------------------약속시간 전,후 확인함수
+    private String user_name(){
+        Log.d(TAG,"USR==NULL?:"+(user==null));
+        String user_info=(String)user.getDisplayName();
+        String name=user_info.split("_")[0];
+        return name;
+    }
+    //------------------------------------------------------------------------------사용자 이름따오기
+    private void out_from_later(){
+        Iterator<HashMap> it=later.iterator();
+        while(it.hasNext()){
+            HashMap mem=(HashMap)it.next();
+            if(mem.get("_name").equals(user_name())){
+                it.remove();
+                break;
+            }
+        }       //자바에서 loop도중 데이터 수정해야할시, iterator를 쓰도록하자.
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference promise_Ref =db.collection("rooms").document(KEY).collection("promise").document(PROMISE_KEY);
+        promise_Ref.update("Later",later).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getApplicationContext(),"survived!!!",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+//------------------------------------------------------------------------------------------------later객체에서 뺴주고, db에 반영
+    public Location getLocation() {
+        Location location=null;
+        try {
+            long MIN_TIME_BW_UPDATES=1000;
+            float MIN_DISTANCE_CHANGE_FOR_UPDATES=1;
+            // GPS, NETWORK 활성화 여부 확인
+            Boolean isGPSEnabled = lm.
+                    isProviderEnabled(LocationManager.GPS_PROVIDER);
+            Boolean isNetworkEnabled =lm.
+                    isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-final LocationListener gpsLocationListener = new LocationListener() {
-public void onLocationChanged(Location location) {
-//    String provider = location.getProvider();
-    double longitude = location.getLongitude();
-    double latitude = location.getLatitude();
-//    double altitude = location.getAltitude();
-    calculate_distance(longitude,latitude);
-}
-public void onStatusChanged(String provider, int status, Bundle extras) {}
-public void onProviderEnabled(String provider) {}
-public void onProviderDisabled(String provider){}
+            if (!isGPSEnabled && !isNetworkEnabled) {
+            } else {
+                if (isNetworkEnabled) {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    }
+                    lm.requestLocationUpdates(
+                            LocationManager.NETWORK_PROVIDER,
+                            MIN_TIME_BW_UPDATES,
+                            MIN_DISTANCE_CHANGE_FOR_UPDATES, gpsLocationListener);//LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener
+                    if (lm != null) {
+                        location = lm
+                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        if (location != null) {
+                        }
+                    }
+                } else if (isGPSEnabled) {
+                    if (location == null) {
+                        lm.requestLocationUpdates(
+                                LocationManager.GPS_PROVIDER,
+                                MIN_TIME_BW_UPDATES,
+                                MIN_DISTANCE_CHANGE_FOR_UPDATES, gpsLocationListener);
+                        if (lm != null) {
+                            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            if (location != null) {
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return location;
+    }
+    final LocationListener gpsLocationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            user_lon = location.getLongitude();
+            user_lat = location.getLatitude();
+            distance=calculate_distance(user_lon,user_lat);
+        }
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+        public void onProviderEnabled(String provider) {}
+        public void onProviderDisabled(String provider){}
     };
 }
-
