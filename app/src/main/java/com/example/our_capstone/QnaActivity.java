@@ -49,6 +49,7 @@ public class QnaActivity extends AppCompatActivity {                            
         KEY = intent.getExtras().getString("room_key");
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
+        bottomNavigationView.setSelectedItemId(R.id.nav_menu);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("rooms")
@@ -104,7 +105,7 @@ public class QnaActivity extends AppCompatActivity {                            
                             return true;
 
                         case R.id.nav_menu:
-                            gotoMenuActivity(KEY);
+                            //gotoMenuActivity(KEY);
                             return true;
 
                         case R.id.nav_album:

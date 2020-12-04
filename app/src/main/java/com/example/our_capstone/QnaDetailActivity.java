@@ -52,6 +52,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class QnaDetailActivity extends AppCompatActivity {                                                //메인클래스
     private static final String TAG = "AppCompatActivity";
@@ -79,6 +80,7 @@ public class QnaDetailActivity extends AppCompatActivity {                      
         QNACONTENT = intent.getExtras().getString("qna_content");
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
+        bottomNavigationView.setSelectedItemId(R.id.nav_menu);
 
         TextView title = (TextView)findViewById(R.id.title);
         title.setText(QNATITLE);
@@ -124,8 +126,13 @@ public class QnaDetailActivity extends AppCompatActivity {                      
                         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {          //해당 영역 클릭시 이동하게해줌
-                                //VoQnaInfo qna = (VoQnaInfo)adapter.getItem(position);
-                                //gotoRoomActivity(room);
+                                VoReplyInfo rep = (VoReplyInfo)adapter.getItem(position);
+                                if(rep.getPhoto().equals("unknown")){
+                                    Log.d(TAG, "onItemClick: "+ rep.getPhoto());
+                                }else{
+                                    Log.d(TAG, "onItemClick: "+ rep.getPhoto());
+                                    gotoPopupPicsActivity(rep.getPhoto());
+                                }
                             }
                         });
                     }
@@ -150,7 +157,7 @@ public class QnaDetailActivity extends AppCompatActivity {                      
                             return true;
 
                         case R.id.nav_menu:
-                            gotoMenuActivity(RKEY);
+                            //gotoMenuActivity(RKEY);
                             return true;
 
                         case R.id.nav_album:
@@ -175,6 +182,13 @@ public class QnaDetailActivity extends AppCompatActivity {                      
             }
         }
     };
+    private void gotoPopupPicsActivity(String pic_id){
+        Intent intent = new Intent(this, PopupPicsActivity.class);
+        intent.putExtra("room_key", "qna_"+RKEY);
+        intent.putExtra("album_key", QNAKEY);
+        intent.putExtra("pic_id", pic_id);
+        startActivityForResult(intent, 1);
+    }
     private void gotoRoomActivity(String room_key) {
         Intent intent=new Intent(this,RoomActivity.class);
         intent.putExtra("room_key",room_key);
@@ -248,7 +262,12 @@ public class QnaDetailActivity extends AppCompatActivity {                      
                 convertView = inflater.inflate(R.layout.greedy_reply, parent, false);     // greedy view안에는 각각 greedy_our.xml을 적용
             }
             TextView nm = convertView.findViewById(R.id.replies_txt);                                        //각 방의 이름이 들어갈 텍스트뷰
-            nm.setText(reply.getAuthor()+": "+reply.getContent());                                                             //각 방이름 설정
+            TextView nm1 = convertView.findViewById(R.id.textView10);
+            TextView nm2 = convertView.findViewById(R.id.textView13);
+            String[] info = reply.getAuthor().split("_");
+            nm1.setText(info[0]+"_"+info[1]);
+            nm2.setText(info[2]);
+            nm.setText(reply.getContent());                                                             //각 방이름 설정
             if(!reply.getPhoto().equals("unknown")){
                 final ImageView im = convertView.findViewById(R.id.replies_img);
                 StorageReference ref = FirebaseStorage.getInstance().getReference();
@@ -267,6 +286,9 @@ public class QnaDetailActivity extends AppCompatActivity {                      
                         }
                     }
                 });
+            }else{
+                final ImageView im = convertView.findViewById(R.id.replies_img);
+                im.setImageResource(0);
             }
             return convertView;
         }
@@ -311,6 +333,9 @@ public class QnaDetailActivity extends AppCompatActivity {                      
                 Map<String, Object> reply = new HashMap<>();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd_HHmmss");             //이름이 년월일_시분초로 생성
                 Date now = new Date();
+                TimeZone timezone;
+                timezone = TimeZone.getTimeZone("Asia/Seoul");
+                formatter.setTimeZone(timezone);
                 reply.put("author",formatter.format(now)+"_"+user.getDisplayName());
                 if (sto_pho_path == null) {
                     reply.put("photo","unknown");
@@ -344,6 +369,9 @@ public class QnaDetailActivity extends AppCompatActivity {                      
             //Unique한 파일명을 만들자.
             SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd_HHmmss");             //이름이 년월일_시분초로 생성
             Date now = new Date();
+            TimeZone timezone;
+            timezone = TimeZone.getTimeZone("Asia/Seoul");
+            formatter.setTimeZone(timezone);
             String filename = formatter.format(now) + ".png";                                       //최종 이름이 될 녀석
             sto_pho_path = filename;                                                                //전역변수에도 넣어줌
             //storage 주소와 폴더 파일명을 지정해 준다.(방Key의 하위폴더에 사진 넣기)

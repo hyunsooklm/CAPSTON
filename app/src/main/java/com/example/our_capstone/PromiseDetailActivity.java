@@ -59,82 +59,82 @@ public class PromiseDetailActivity extends AppCompatActivity {
         if (user == null) {                                                             //현재 상태가 로그인된 상태가 아니라면
             Log.d(TAG, "로그인된상태가아니야??");                                                       //로그인창으로 이동하기
         }
-            BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-            bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
-            Intent intent = getIntent();    //데이터 수신
-            promise = (VoPromiseInfo) intent.getSerializableExtra("promise");
-            later = promise.get_late_comer();
-            PROMISE_KEY = promise.get_key();
-            Toast.makeText(getApplicationContext(), promise.get_attender().get(0).getClass().getName() + "-" + promise.get_attender().get(0), Toast.LENGTH_LONG).show();
-            Log.d(TAG, promise.get_attender().get(0).getClass().getName() + "-" + promise.get_attender().get(0) + "!!!!!!!!!!!!!!!!!!!!!!!!");
-            String room_key = intent.getExtras().getString("room_key");
-            KEY = room_key;
-            lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
+        Intent intent = getIntent();    //데이터 수신
+        promise = (VoPromiseInfo) intent.getSerializableExtra("promise");
+        later = promise.get_late_comer();
+        PROMISE_KEY = promise.get_key();
+        //Toast.makeText(getApplicationContext(), promise.get_attender().get(0).getClass().getName() + "-" + promise.get_attender().get(0), Toast.LENGTH_LONG).show();
+        Log.d(TAG, promise.get_attender().get(0).getClass().getName() + "-" + promise.get_attender().get(0) + "!!!!!!!!!!!!!!!!!!!!!!!!");
+        String room_key = intent.getExtras().getString("room_key");
+        KEY = room_key;
+        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-            arrive_button = (Button) findViewById(R.id.arrive_button);
-            later_list = (TextView) findViewById(R.id.later_list);
-            distance_view = (TextView) findViewById(R.id.distance);
-            delete=(Button)findViewById(R.id.delete);
-            modify=(Button)findViewById(R.id.modify);
+        arrive_button = (Button) findViewById(R.id.arrive_button);
+        later_list = (TextView) findViewById(R.id.later_list);
+        distance_view = (TextView) findViewById(R.id.distance);
+        delete=(Button)findViewById(R.id.delete);
+        //modify=(Button)findViewById(R.id.modify);
 
 //-----------------------------------------------------------------
-            current = Calendar.getInstance();
-            set_date = findViewById(R.id.setdate);
-            date_time = promise.get_date_time();
-            set_date.setText(date_time.get(Calendar.YEAR) + "년 " + (date_time.get(Calendar.MONTH) + 1)
-                    + "월 " + date_time.get(Calendar.DAY_OF_MONTH) + "일");
+        current = Calendar.getInstance();
+        set_date = findViewById(R.id.setdate);
+        date_time = promise.get_date_time();
+        set_date.setText(date_time.get(Calendar.YEAR) + "년 " + (date_time.get(Calendar.MONTH) + 1)
+                + "월 " + date_time.get(Calendar.DAY_OF_MONTH) + "일");
 
-            set_time = findViewById(R.id.settime);
-            int hh = date_time.get(Calendar.HOUR_OF_DAY);
-            int mm = date_time.get(Calendar.MINUTE);
-            if (mm == 0)
-                set_time.setText(hh + ":" + "00");
-            else
-                set_time.setText(hh + ": " + mm);
+        set_time = findViewById(R.id.settime);
+        int hh = date_time.get(Calendar.HOUR_OF_DAY);
+        int mm = date_time.get(Calendar.MINUTE);
+        if (mm == 0)
+            set_time.setText(hh + ":" + "00");
+        else
+            set_time.setText(hh + ": " + mm);
 
-            set_location = findViewById(R.id.setlocation);
-            set_location.setText(promise.get_location());
+        set_location = findViewById(R.id.setlocation);
+        set_location.setText(promise.get_location());
 //----------------------------------------------------------------- //날짜나타내기
-            Button set_member = findViewById(R.id.member);
-            List<HashMap> attender = promise.get_attender();
-            String text = "";
-            for (HashMap mem : attender) {
-                String name = (String) mem.get("_name");
-                text += name + ",";
-            }
-            text = text.substring(0, text.length() - 1); //마지막, cut}
-            set_member.setText(text);
+        Button set_member = findViewById(R.id.member);
+        List<HashMap> attender = promise.get_attender();
+        String text = "";
+        for (HashMap mem : attender) {
+            String name = (String) mem.get("_name");
+            text += name + ",";
+        }
+        text = text.substring(0, text.length() - 1); //마지막, cut}
+        set_member.setText(text);
 //-----------------------------------------------------------------//member 나타내기
 
-            if (before_promisetime()) { //약속시간전
-                arrive_button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (calculate_distance(user_lon, user_lat) < limit_distance) { //도착!
-                            out_from_later();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "도착전", Toast.LENGTH_LONG).show();
-                        }
+        if (before_promisetime()) { //약속시간전
+            arrive_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (calculate_distance(user_lon, user_lat) < limit_distance) { //도착!
+                        out_from_later();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "도착전", Toast.LENGTH_LONG).show();
                     }
-                });
-            }   //약속시간 전 도착버튼 누르면 later리스트에서 사라짐
-            else {
-                    arrive_button.setVisibility(View.GONE);
-                    distance_view.setVisibility(View.GONE);
-                    delete.setVisibility(View.GONE);
-                    modify.setVisibility(View.GONE);
-                    later_list.setVisibility(View.VISIBLE);
-                    String late_list=later_list.getText().toString();
-                    for(HashMap mem:later){
-                        late_list+=mem.get("_name")+",";
-                    }
-                    if(later.size()>0){ //지각자 한명이라도 있을경우
-                        late_list=late_list.substring(0,late_list.length()-1);
-                        later_list.setText(late_list);
-                    }
-                    else
-                        later_list.setText("지각자 없음!");
-            }//약속시간 이후
+                }
+            });
+        }   //약속시간 전 도착버튼 누르면 later리스트에서 사라짐
+        else {
+            arrive_button.setVisibility(View.GONE);
+            distance_view.setVisibility(View.GONE);
+            delete.setVisibility(View.GONE);
+            //modify.setVisibility(View.GONE);
+            later_list.setVisibility(View.VISIBLE);
+            String late_list=later_list.getText().toString();
+            for(HashMap mem:later){
+                late_list+=mem.get("_name")+",";
+            }
+            if(later.size()>0){ //지각자 한명이라도 있을경우
+                late_list=late_list.substring(0,late_list.length()-1);
+                later_list.setText(late_list);
+            }
+            else
+                later_list.setText("지각자 없음!");
+        }//약속시간 이후
 //-----------------------------------------------------------------------------약속시간 전 후, 거리계산+지각자리스트 나타내기
 
 //-----------------------------------------------------------------------------약속삭제
@@ -148,56 +148,62 @@ public class PromiseDetailActivity extends AppCompatActivity {
 
 
 //-----------------------------------------------------------------------------약속수정
-            if (Build.VERSION.SDK_INT >= 23 &&
-                    ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(PromiseDetailActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                        0);
-            } else {
-                Location location = getLocation();
-                user_lon = location.getLongitude();
-                user_lat = location.getLatitude();
-                double altitude = location.getAltitude();
-                calculate_distance(user_lon, user_lat);
-                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
-                lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
-            }
+        if (Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(PromiseDetailActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    0);
+        } else {
+            Location location = getLocation();
+            user_lon = location.getLongitude();
+            user_lat = location.getLatitude();
+            double altitude = location.getAltitude();
+            calculate_distance(user_lon, user_lat);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
         }
-//---------------------------------------------------------------------------------activity 켤때, 거리계산(최초)
-        BottomNavigationView.OnNavigationItemSelectedListener navlistener =
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.nav_home:
-                                gotoRoomActivity(KEY);
-                                return true;
+    }
+    //---------------------------------------------------------------------------------activity 켤때, 거리계산(최초)
+    BottomNavigationView.OnNavigationItemSelectedListener navlistener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.nav_home:
+                            gotoRoomActivity(KEY);
+                            return true;
 
-                            case R.id.nav_chat:
-                                gotoChatActivity(KEY);
-                                return true;
+                        case R.id.nav_chat:
+                            gotoChatActivity(KEY);
+                            return true;
 
-                            case R.id.nav_menu:
-                                gotoMenuActivity(KEY);
-                                return true;
+                        case R.id.nav_menu:
+                            gotoMenuActivity(KEY);
+                            return true;
 
-                            case R.id.nav_album:
-                                gotoAlbumActivity(KEY);
-                                return true;
+                        case R.id.nav_album:
+                            gotoAlbumActivity(KEY);
+                            return true;
 
-                            case R.id.nav_member:
-                                gotoMemberActivity();
-                                return true;
+                        case R.id.nav_member:
+                            gotoMemberActivity();
+                            return true;
 
-                        }
-                        return false;
                     }
-                };
+                    return false;
+                }
+            };
     //------------------------------------------------------------------------navigation
     @Override
     public void onBackPressed() {                                                          //뒤로가기 버튼 눌리면
         super.onBackPressed();
         moveTaskToBack(true);
-        gotoMenuActivity(KEY);
+        gotoLatecheckActivity();
+    }
+    private void gotoLatecheckActivity() {
+        Intent intent=new Intent(this,LateCheckActivity.class);
+        intent.putExtra("room_key",KEY);
+        startActivity(intent);
+        PromiseDetailActivity.this.finish();
     }
     private void gotoAlbumActivity(String room_key) {
         Intent intent = new Intent(this, AlbumActivity.class);
@@ -258,14 +264,14 @@ public class PromiseDetailActivity extends AppCompatActivity {
         }
         return distance;
     }
-//------------------------------------------------------------------------------거리계산함수
+    //------------------------------------------------------------------------------거리계산함수
     private boolean before_promisetime(){
         if(current.after(this.date_time))
             return false;
         else
             return true;
     }
-//------------------------------------------------------------------------------약속시간 전,후 확인함수
+    //------------------------------------------------------------------------------약속시간 전,후 확인함수
     private String user_name(){
         Log.d(TAG,"USR==NULL?:"+(user==null));
         String user_info=(String)user.getDisplayName();
@@ -295,34 +301,34 @@ public class PromiseDetailActivity extends AppCompatActivity {
     public void delete_dialog(View view){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final DocumentReference promise_Ref =db.collection("rooms").document(KEY).collection("promise").document(PROMISE_KEY);
-            AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(PromiseDetailActivity.this);
-            // alert의 title과 Messege 세팅
-            myAlertBuilder.setTitle("삭제");
-            myAlertBuilder.setMessage("삭제하시겠습니까?");
-            // 버튼 추가 (Ok 버튼과 Cancle 버튼 )
-            myAlertBuilder.setPositiveButton("예",new DialogInterface.OnClickListener(){
-                public void onClick(DialogInterface dialog,int which){
-                    // OK 버튼을 눌렸을 경우
-                    promise_Ref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(getApplicationContext(),"삭제되었습니다.",Toast.LENGTH_LONG).show();
-                            gotoLateCheckActivity(KEY);
-                        }
-                    });
-                }
-            });
-            myAlertBuilder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // Cancle 버튼을 눌렸을 경우
+        AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(PromiseDetailActivity.this);
+        // alert의 title과 Messege 세팅
+        myAlertBuilder.setTitle("삭제");
+        myAlertBuilder.setMessage("삭제하시겠습니까?");
+        // 버튼 추가 (Ok 버튼과 Cancle 버튼 )
+        myAlertBuilder.setPositiveButton("예",new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog,int which){
+                // OK 버튼을 눌렸을 경우
+                promise_Ref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(),"삭제되었습니다.",Toast.LENGTH_LONG).show();
+                        gotoLateCheckActivity(KEY);
+                    }
+                });
+            }
+        });
+        myAlertBuilder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Cancle 버튼을 눌렸을 경우
 
-                }
-            });
-            // Alert를 생성해주고 보여주는 메소드(show를 선언해야 Alert가 생성됨)
-            myAlertBuilder.show();
-        }
-//------------------------------------------------------------------------------------------------약속 삭제
+            }
+        });
+        // Alert를 생성해주고 보여주는 메소드(show를 선언해야 Alert가 생성됨)
+        myAlertBuilder.show();
+    }
+    //------------------------------------------------------------------------------------------------약속 삭제
     public Location getLocation() {
         Location location=null;
         try {

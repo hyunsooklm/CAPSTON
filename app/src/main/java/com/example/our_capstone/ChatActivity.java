@@ -2,9 +2,11 @@ package com.example.our_capstone;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,12 +18,14 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,12 +44,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class ChatActivity extends AppCompatActivity {                                                //메인클래스
     private static final String TAG = "AppCompatActivity";
@@ -82,7 +88,7 @@ public class ChatActivity extends AppCompatActivity {                           
                         for (QueryDocumentSnapshot doc : value) {
                             if (doc.getId() != null) {
 
-                                VoChatInfo chat = new VoChatInfo(doc.get("name").toString(),doc.get("content").toString(),doc.get("date").toString());
+                                VoChatInfo chat = new VoChatInfo(doc.get("name").toString(),doc.get("content").toString(),doc.get("date").toString(),doc.get("email").toString());
                                 adapter.addChat(chat);
                             }
                         }
@@ -198,6 +204,15 @@ public class ChatActivity extends AppCompatActivity {                           
             nm.setText(chat.getName()+"");                                                             //각 방이름 설정
             ct.setText(chat.getContent()+"");
             dt.setText(chat.getDate()+"");
+
+            if(user.getEmail().equals(chat.getEmail()+"")){                                         //채팅이 내 채팅이라면
+                Log.d(TAG, "getView: -----"+ user.getEmail()+chat.getEmail()+"------");
+                LinearLayout totchatLinear = convertView.findViewById(R.id.totchat);                //findviewbuId 앞은 그리드뷰 내부니까 무조건 convertView
+                totchatLinear.setGravity(Gravity.RIGHT);
+            }else{                                                                                  //else절 없으면 레이아웃 id들이 같아서 다 똑같은거 적용함!!!!
+                LinearLayout totchatLinear = convertView.findViewById(R.id.totchat);                //findviewbuId 앞은 그리드뷰 내부니까 무조건 convertView
+                totchatLinear.setGravity(Gravity.LEFT);
+            }
             return convertView;
         }
     }
@@ -207,8 +222,13 @@ public class ChatActivity extends AppCompatActivity {                           
             Map<String, Object> chat = new HashMap<>();
             SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd_HHmmss");             //이름이 년월일_시분초로 생성
             Date now = new Date();
+            TimeZone timezone;
+            timezone = TimeZone.getTimeZone("Asia/Seoul");
+            formatter.setTimeZone(timezone);
+            Log.d(TAG, "apply: "+ formatter.format(now));
             chat.put("name",user.getDisplayName().split("_")[0]);                            //[0] -> 이름, [1] -> 생일
             chat.put("content",editText.getText().toString());
+            chat.put("email",user.getEmail());
             chat.put("date",formatter.format(now));
             FirebaseFirestore db = FirebaseFirestore.getInstance();                                     //파이어베이스의 firestore (DB) 인스턴스 초기화
             db.collection("rooms").document(KEY).collection("chats")

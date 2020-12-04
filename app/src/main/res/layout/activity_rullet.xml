@@ -1,51 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:background="#EDEDE8"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
-    <LinearLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"/>
+        android:layout_height="150dp"
+        android:background="@drawable/background__header"
+        android:padding="10dp">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/sharp_label_black_18dp2" />
 
-    <RelativeLayout
-        android:id="@+id/layoutRoulette"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:orientation="vertical"
-        android:background="@drawable/background_roulette">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <!--        <Button-->
-        <!--            android:id="@+id/btn_rotate"-->
-        <!--            android:layout_width="65dp"-->
-        <!--            android:layout_height="65dp"-->
-        <!--            android:text="돌리기"-->
-        <!--            android:layout_centerInParent="true"-->
-        <!--            android:background="@drawable/button_selector"/>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
-    </RelativeLayout>
+                <TextView
+                    android:layout_width="158dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bmhannapro"
+                    android:gravity="center"
+                    android:text="돌려 돌려 돌림판"
+                    android:textSize="36sp"
 
-    <Button
-        android:id="@+id/btnRotate"
+                    />
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kyobohandwriting"
+                    android:gravity="center"
+                    android:text="오늘의 당첨자는 누구??"
+
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="148dp"
+                android:layout_height="121dp"
+
+                android:src="@drawable/roulette" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:text="spin"
-        android:layout_centerInParent="true" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tvResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="Result : "
-        android:textSize="32sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/sharp_label_black_18dp2" />
+
+            <RelativeLayout
+                android:id="@+id/layoutRoulette"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:background="@drawable/background_roulette"
+                android:orientation="vertical">
+
+                <!--        <Button-->
+                <!--            android:id="@+id/btn_rotate"-->
+                <!--            android:layout_width="65dp"-->
+                <!--            android:layout_height="65dp"-->
+                <!--            android:text="돌리기"-->
+                <!--            android:layout_centerInParent="true"-->
+                <!--            android:background="@drawable/button_selector"/>-->
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btnRotate"
+                android:layout_width="180dp"
+                android:layout_height="65dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_login"
+                android:fontFamily="@font/kyobohandwriting"
+                android:text="돌리기"
+                android:textColor="#592DBF"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/tvResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/bmhannapro"
+                android:gravity="center"
+                android:text="당첨 : "
+                android:textSize="32sp" />
+
+            <TextView
+                android:id="@+id/em_res"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

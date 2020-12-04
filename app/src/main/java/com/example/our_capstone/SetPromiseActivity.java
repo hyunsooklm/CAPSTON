@@ -191,25 +191,25 @@ public class SetPromiseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final ListViewAdapter adapter = new ListViewAdapter(Room_member);
                 AlertDialog.Builder builder = new AlertDialog.Builder(SetPromiseActivity.this)
-               .setAdapter(adapter, null).setTitle("참가자선택")
+                        .setAdapter(adapter, null).setTitle("참가자선택")
                         .setPositiveButton("확정", new DialogInterface.OnClickListener() { // 버튼은 테마에 따라서 모양이 다르게 모임
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                        Toast.makeText(getApplicationContext(),"참여자 수: "+attender.size(),Toast.LENGTH_LONG).show();
-                                        String text="";
-                                        for(Object mem:attender){
-                                            VoPromiseInfo.Member mem_one=(VoPromiseInfo.Member)mem;
-                                            String name=mem_one.get_name();
-                                            text+=name+",";
-                                        }
-                                        if(text.length()!=0) {
-                                            text=text.substring(0,text.length()-1); //마지막, cut}
-                                            set_member.setText(text);
-                                        }
-                                }})//확정 버튼을 눌렀을때
+                                Toast.makeText(getApplicationContext(),"참여자 수: "+attender.size(),Toast.LENGTH_LONG).show();
+                                String text="";
+                                for(Object mem:attender){
+                                    VoPromiseInfo.Member mem_one=(VoPromiseInfo.Member)mem;
+                                    String name=mem_one.get_name();
+                                    text+=name+",";
+                                }
+                                if(text.length()!=0) {
+                                    text=text.substring(0,text.length()-1); //마지막, cut}
+                                    set_member.setText(text);
+                                }
+                            }})//확정 버튼을 눌렀을때
 
                         .setNegativeButton("취소", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                        Toast.makeText(getApplicationContext(),"참여자 수: "+attender.size(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"참여자 수: "+attender.size(),Toast.LENGTH_LONG).show();
                             }}); //취소버튼을 눌렀을때
 
                 AlertDialog alertDialog = builder.create();
@@ -246,7 +246,7 @@ public class SetPromiseActivity extends AppCompatActivity {
     public void onBackPressed() {                                                          //뒤로가기 버튼 눌리면
         super.onBackPressed();
         moveTaskToBack(true);
-        gotoMenuActivity(KEY);
+        gotoLateCheckActivity(KEY);
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navlistener =
@@ -377,22 +377,22 @@ public class SetPromiseActivity extends AppCompatActivity {
     }
 
     private void apply(VoPromiseInfo voPromiseInfo) {
-            Map<String, Object> promise = new HashMap<>();
-            SimpleDateFormat day_formatter = new SimpleDateFormat("yyyyMMdd"); //날짜
-            promise.put("Date",day_formatter.format(voPromiseInfo.get_date_time().getTime()));
-            SimpleDateFormat time_formatter = new SimpleDateFormat("HH:mm"); //시간
-            promise.put("Time",time_formatter.format(voPromiseInfo.get_date_time().getTime()));
-            promise.put("Location",voPromiseInfo.get_location());//장소
-            promise.put("lat",voPromiseInfo.get_lat()); //위도
-            promise.put("lon",voPromiseInfo.get_lon()); //경도
-            promise.put("attender",voPromiseInfo.get_attender()); //참가자
-            promise.put("Later",voPromiseInfo.get_late_comer()); //지각자
-            FirebaseFirestore db = FirebaseFirestore.getInstance();//파이어베이스의 firestore (DB) 인스턴스 초기화
-            DocumentReference Promise_Ref=db.collection("rooms").document(KEY).collection("promise").document();
-            String key=Promise_Ref.getId(); //promise문서 키가져와서
-            voPromiseInfo.set_key(key); //객체에 저장해주고
-            promise.put("key",voPromiseInfo.get_key());//promise 방 키
-            Promise_Ref.set(promise); //promise객체 파베에 추가
+        Map<String, Object> promise = new HashMap<>();
+        SimpleDateFormat day_formatter = new SimpleDateFormat("yyyyMMdd"); //날짜
+        promise.put("Date",day_formatter.format(voPromiseInfo.get_date_time().getTime()));
+        SimpleDateFormat time_formatter = new SimpleDateFormat("HH:mm"); //시간
+        promise.put("Time",time_formatter.format(voPromiseInfo.get_date_time().getTime()));
+        promise.put("Location",voPromiseInfo.get_location());//장소
+        promise.put("lat",voPromiseInfo.get_lat()); //위도
+        promise.put("lon",voPromiseInfo.get_lon()); //경도
+        promise.put("attender",voPromiseInfo.get_attender()); //참가자
+        promise.put("Later",voPromiseInfo.get_late_comer()); //지각자
+        FirebaseFirestore db = FirebaseFirestore.getInstance();//파이어베이스의 firestore (DB) 인스턴스 초기화
+        DocumentReference Promise_Ref=db.collection("rooms").document(KEY).collection("promise").document();
+        String key=Promise_Ref.getId(); //promise문서 키가져와서
+        voPromiseInfo.set_key(key); //객체에 저장해주고
+        promise.put("key",voPromiseInfo.get_key());//promise 방 키
+        Promise_Ref.set(promise); //promise객체 파베에 추가
 
     }
 

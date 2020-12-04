@@ -76,7 +76,7 @@ public class LateCheckActivity extends AppCompatActivity {
                                         (ArrayList)doc.get("attender"),(ArrayList)doc.get("Later"),doc.getId());
                                 try {
                                     if(yet_promise_day(promise.get_date_time())) //약속당일 아직 안되었을경우
-                                    adapter.addpromise(promise); //약속리스트에서 보여준다.
+                                        adapter.addpromise(promise); //약속리스트에서 보여준다.
                                     else{ //약속일 지났으면 db에서 삭제
                                         FirebaseFirestore delete_db = FirebaseFirestore.getInstance();
                                         delete_db.collection("rooms")
@@ -94,9 +94,9 @@ public class LateCheckActivity extends AppCompatActivity {
                         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {          //해당 영역 클릭시 이동하게해줌
-                                 VoPromiseInfo promise = (VoPromiseInfo)adapter.getItem(position);
-                                  Toast.makeText(getApplicationContext(),promise.get_location(),Toast.LENGTH_LONG).show();
-                                  gotoPromiseDetail(promise);
+                                VoPromiseInfo promise = (VoPromiseInfo)adapter.getItem(position);
+                                //Toast.makeText(getApplicationContext(),promise.get_location(),Toast.LENGTH_LONG).show();
+                                gotoPromiseDetail(promise);
                             }
                         });
                     }

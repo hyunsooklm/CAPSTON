@@ -13,15 +13,14 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="280dp"
+        android:fontFamily="@font/bmhannapro"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="TextView"
-        android:textSize="18sp"
         android:textColor="#592DBF"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="@font/bmhannapro"/>
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
     <TextView
         android:id="@+id/content"
@@ -93,15 +92,14 @@
     <GridView
         android:id="@+id/grid_rooms"
         android:layout_width="fill_parent"
-        android:layout_height="330dp"
+        android:layout_height="0dp"
         android:numColumns="1"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/reply_img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.693">
+        app:layout_constraintTop_toBottomOf="@+id/content">
 
     </GridView>
 
@@ -109,7 +107,6 @@
         android:id="@+id/reply_btn"
         android:layout_width="79dp"
         android:layout_height="47dp"
-        android:layout_marginTop="13dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/background_btn"
         android:backgroundTint="#BEB0D6"
@@ -117,32 +114,28 @@
         android:text="답하기"
         android:textColor="#673AB7"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/grid_rooms" />
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:id="@+id/reply"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/kyobohandwriting"
         android:gravity="center|center_horizontal|center_vertical"
         android:hint="답글을 달아보세요"
-        android:fontFamily="@font/kyobohandwriting"
         android:textSize="18sp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/reply_btn"
-        app:layout_constraintTop_toBottomOf="@+id/grid_rooms"
-        app:layout_constraintVertical_bias="0.122" />
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        app:layout_constraintEnd_toStartOf="@+id/reply_btn" />
 
 
     <ImageView
         android:id="@+id/reply_img"
         android:layout_width="57dp"
         android:layout_height="47dp"
-        android:layout_marginTop="11dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
         app:layout_constraintEnd_toStartOf="@+id/reply"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/grid_rooms"
         app:srcCompat="@drawable/photo2" />
 
 

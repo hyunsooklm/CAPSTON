@@ -10,40 +10,40 @@ import java.util.Date;
 import java.util.List;
 
 public class VoPromiseInfo implements Serializable {
-   private Calendar date_time;
-   private String location;
-   private Double lat,lon;
-   private ArrayList attender;
-   private ArrayList late_comer = new ArrayList();
-   private String key;
+    private Calendar date_time;
+    private String location;
+    private Double lat,lon;
+    private ArrayList attender;
+    private ArrayList late_comer = new ArrayList();
+    private String key;
     VoPromiseInfo(){
         date_time=Calendar.getInstance();
         attender = new ArrayList<Member>();
         late_comer = new ArrayList();
     }
-   VoPromiseInfo(Calendar date_time,String location,String key,Double lon,Double lat,ArrayList attender,ArrayList late_comer){
-       this.date_time=date_time;
-       this.location=location;
-       this.lon=lon;
-       this.lat=lat;
-       this.attender=attender;
-       this.late_comer=late_comer;
-       this.key=key;
-   }
-   List<Member> VO_mem(){return new ArrayList<Member>();} //방 전체 멤버리스트
-   protected void set_date_time(Calendar date_time){this.date_time=date_time;}
-   protected void set_location_info(Double lat,Double lon){this.lat=lat;this.lon=lon;}
-   protected void set_location(String location){this.location=location;}
-   protected void set_attender(ArrayList attender){this.attender=attender;}
-   protected void set_late_comer(ArrayList late_comer){ this.late_comer=late_comer;}
-   protected void set_key(String key){this.key=key;}
-   protected Calendar get_date_time(){return this.date_time;}
-   protected String get_location(){return this.location;}
-   protected String get_key(){return this.key;}
-   protected Double get_lat(){return this.lat;}
-   protected Double get_lon(){return this.lon;}
-   protected ArrayList get_attender(){return this.attender;}
-   protected ArrayList get_late_comer(){return this.late_comer;}
+    VoPromiseInfo(Calendar date_time,String location,String key,Double lon,Double lat,ArrayList attender,ArrayList late_comer){
+        this.date_time=date_time;
+        this.location=location;
+        this.lon=lon;
+        this.lat=lat;
+        this.attender=attender;
+        this.late_comer=late_comer;
+        this.key=key;
+    }
+    List<Member> VO_mem(){return new ArrayList<Member>();} //방 전체 멤버리스트
+    protected void set_date_time(Calendar date_time){this.date_time=date_time;}
+    protected void set_location_info(Double lat,Double lon){this.lat=lat;this.lon=lon;}
+    protected void set_location(String location){this.location=location;}
+    protected void set_attender(ArrayList attender){this.attender=attender;}
+    protected void set_late_comer(ArrayList late_comer){ this.late_comer=late_comer;}
+    protected void set_key(String key){this.key=key;}
+    protected Calendar get_date_time(){return this.date_time;}
+    protected String get_location(){return this.location;}
+    protected String get_key(){return this.key;}
+    protected Double get_lat(){return this.lat;}
+    protected Double get_lon(){return this.lon;}
+    protected ArrayList get_attender(){return this.attender;}
+    protected ArrayList get_late_comer(){return this.late_comer;}
 
 
     @Override
@@ -60,26 +60,26 @@ public class VoPromiseInfo implements Serializable {
         String birth;
         boolean isSelected;
         Member(){
-        name="";
-        birth="";
-        isSelected=false;
+            name="";
+            birth="";
+            isSelected=false;
         }
-       Member(String name,String birth){
-           this.name=name;
-           this.birth=birth;
-           this.isSelected=false;
-       }
-       public void set_name(String name){
+        Member(String name,String birth){
             this.name=name;
-       }
-       public void set_birth(String birth){
-           this.birth=birth;
-       }
-       public void set_Selected(boolean is_Selected){this.isSelected=is_Selected;}
-       public String get_name(){return this.name;}
-       public String get_birth(){return this.birth;}
-       public boolean isSelected() {
+            this.birth=birth;
+            this.isSelected=false;
+        }
+        public void set_name(String name){
+            this.name=name;
+        }
+        public void set_birth(String birth){
+            this.birth=birth;
+        }
+        public void set_Selected(boolean is_Selected){this.isSelected=is_Selected;}
+        public String get_name(){return this.name;}
+        public String get_birth(){return this.birth;}
+        public boolean isSelected() {
             return this.isSelected;
-       }
-   }
+        }
+    }
 }

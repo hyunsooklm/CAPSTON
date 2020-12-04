@@ -4,11 +4,13 @@ public class VoChatInfo {
     private String name;
     private String content;
     private String date;
+    private String email;
 
-    public VoChatInfo(String name, String content, String date){
+    public VoChatInfo(String name, String content, String date, String email){
         this.name  = name;
         this.content = content;
         this.date = date;
+        this.email = email;
     }
     public String getName() {
         return name;
@@ -27,5 +29,11 @@ public class VoChatInfo {
     }
     public void setDate(String date) {
         this.date = date;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String date) {
+        this.email = email;
     }
 }

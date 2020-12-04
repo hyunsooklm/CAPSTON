@@ -26,7 +26,6 @@ public class MenuActivity extends AppCompatActivity {
         findViewById(R.id.rullet).setOnClickListener(onClickListener);
         findViewById(R.id.conceptshot).setOnClickListener(onClickListener);
         findViewById(R.id.late_man).setOnClickListener(onClickListener);
-
     }
     @Override public void onBackPressed(){                                                          //뒤로가기 버튼 눌리면
         super.onBackPressed();
