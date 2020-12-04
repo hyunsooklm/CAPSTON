@@ -75,6 +75,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mMap = googleMap;
         geocoder = new Geocoder(this);
 
+
         // 맵 터치 이벤트 구현 //
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
             @Override
@@ -148,8 +149,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         ////////////////////
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng cau = new LatLng(37.5050881, 126.9571012);
+        mMap.addMarker(new MarkerOptions().position(cau).title("Marker in Sydney"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //LatLng point = new LatLng(Double.parseDouble("37.5050881"), Double.parseDouble("126.9571012"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cau, 15));
     }
 }
