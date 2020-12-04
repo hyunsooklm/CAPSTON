@@ -25,6 +25,7 @@ public class MenuActivity extends AppCompatActivity {
         findViewById(R.id.qna).setOnClickListener(onClickListener);
         findViewById(R.id.rullet).setOnClickListener(onClickListener);
         findViewById(R.id.conceptshot).setOnClickListener(onClickListener);
+        findViewById(R.id.late_man).setOnClickListener(onClickListener);
     }
     @Override public void onBackPressed(){                                                          //뒤로가기 버튼 눌리면
         super.onBackPressed();
@@ -101,6 +102,12 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
         MenuActivity.this.finish();
     }
+    private void gotoLatecheckActivity() {
+        Intent intent=new Intent(this,LateCheckActivity.class);
+        intent.putExtra("room_key",KEY);
+        startActivity(intent);
+        MenuActivity.this.finish();
+    }
     View.OnClickListener onClickListener = new View.OnClickListener(){
         @Override
         public  void onClick(View v){
@@ -113,6 +120,9 @@ public class MenuActivity extends AppCompatActivity {
                     break;
                 case R.id.conceptshot:
                     gotoConceptShotActivity();
+                    break;
+                case R.id.late_man:
+                    gotoLatecheckActivity();
                     break;
             }
         }

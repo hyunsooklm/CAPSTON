@@ -3,17 +3,21 @@
     package="com.example.our_capstone">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera2" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".GlobalApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/our_main"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/our_main_round"
         android:supportsRtl="true"
         android:largeHeap="true"
         android:hardwareAccelerated="false"
@@ -63,6 +67,10 @@
         <activity android:name=".ChatActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
 
         </activity>
+        <activity android:name=".SetPromiseActivity">
+        </activity>
+        <activity android:name=".PromiseDetailActivity">
+        </activity>
         <activity android:name=".MemberActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
 
         </activity>
@@ -70,6 +78,12 @@
 
         </activity>
         <activity android:name=".ConceptShotActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
+
+        </activity>
+        <activity android:name=".LateCheckActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
+
+        </activity>
+        <activity android:name=".MapActivity">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
 
         </activity>
         <activity android:name=".PopupInviteActivity"  android:theme="@android:style/Theme.Dialog">               <!--새 엑티비티 추가할때마다 이렇게 추가해주기!!!-->
@@ -91,6 +105,12 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_geo_API_KEY"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
     </application>
 

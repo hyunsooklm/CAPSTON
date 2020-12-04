@@ -232,6 +232,7 @@ public class RulletActivity extends AppCompatActivity {
             buildAlert(text1);
         }
 
+        text2 = text2.split("@")[0];
         tvResult.setText("당첨 : " + text1);
         emResult.setText(text2);
     }

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EDEDE8"
+    tools:context=".MenuActivity">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/background__header"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="125dp"
+            android:layout_height="133dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/promise"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="75dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/bungee"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Promise"
+            android:textSize="45sp"
+            app:layout_constraintEnd_toStartOf="@+id/imageView8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/kyobohandwriting"
+            android:text="늦을것 같다면 뛰어라! RUN!"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#A490C6"
+        android:backgroundTint="#B6A3D8"
+        android:backgroundTintMode="src_in"
+        app:backgroundTint="#fff"
+        app:itemIconSize="30dp"
+        app:labelVisibilityMode="unlabeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/room_menu" >
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|center_horizontal"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/setdate"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_btn"
+                android:fontFamily="@font/kyobohandwriting"
+                android:text="날짜설정" />
+
+            <Button
+                android:id="@+id/settime"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_btn"
+                android:fontFamily="@font/kyobohandwriting"
+                android:text="시간설정" />
+
+            <Button
+                android:id="@+id/setlocation"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_btn"
+                android:fontFamily="@font/kyobohandwriting"
+                android:text="장소설정" />
+
+            <Button
+                android:id="@+id/member"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_btn"
+                android:fontFamily="@font/kyobohandwriting"
+                android:text="멤버설정" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/bmhannapro"
+                android:gravity="center"
+                android:text="도착!"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/arrive_button"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+
+                android:background="@drawable/button"
+                android:fontFamily="@font/kyobohandwriting" />
+
+            <TextView
+                android:id="@+id/distance"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/kyobohandwriting"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/later_list"
+                android:layout_width="153dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/background_btn"
+                android:fontFamily="@font/kyobohandwriting"
+                android:gravity="center"
+                android:text="지각자들: "
+                android:textColor="#592DBF"
+                android:textSize="18sp"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/delete"
+        android:fontFamily="@font/kyobohandwriting"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

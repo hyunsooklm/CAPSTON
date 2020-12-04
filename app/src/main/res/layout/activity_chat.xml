@@ -7,95 +7,82 @@
     android:focusable="auto"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/signin_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".27"
-        app:layout_constraintHorizontal_bias="0.175"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:fontFamily="@font/kyobohandwriting"
-        android:text="OUR"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.556"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="136dp"
-        android:layout_height="107dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/talking"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.538"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView8" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
-        android:layout_height="550dp"
-        android:background="@drawable/background_signup2"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        android:layout_height="100dp"
+        android:background="@drawable/background__header"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".78"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/reply_btn2"
-            android:layout_width="79dp"
-            android:layout_height="47dp"
-            android:background="@drawable/background_btn"
-            android:backgroundTint="#BEB0D6"
-            android:fontFamily="@font/kyobohandwriting"
-            android:text="보내기"
-            android:textColor="#673AB7"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <EditText
-            android:id="@+id/reply3"
-            android:layout_width="300dp"
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/kyobohandwriting"
-            android:gravity="center|center_horizontal|center_vertical"
-            android:hint="메세지를 입력하세요"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/reply_btn2" />
-
-        <GridView
-            android:id="@+id/grid_rooms"
-            android:layout_width="fill_parent"
-            android:layout_height="480dp"
-            android:backgroundTint="#FFFFFF"
-            android:descendantFocusability="afterDescendants"
-            android:numColumns="1"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/reply_btn2"
+            android:gravity="center"
+            android:text="OUR"
+            android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        </GridView>
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="136dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/talking"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.53"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <EditText
+        android:id="@+id/reply3"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/kyobohandwriting"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:hint="메세지를 입력하세요"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        app:layout_constraintEnd_toStartOf="@+id/reply_btn2"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <GridView
+        android:id="@+id/grid_rooms"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="3dp"
+        android:backgroundTint="#FFFFFF"
+        android:descendantFocusability="afterDescendants"
+        android:numColumns="1"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/reply3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
+    </GridView>
+
+    <Button
+        android:id="@+id/reply_btn2"
+        android:layout_width="79dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_btn"
+        android:backgroundTint="#BEB0D6"
+        android:fontFamily="@font/kyobohandwriting"
+        android:text="보내기"
+        android:textColor="#673AB7"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"

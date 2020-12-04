@@ -47,17 +47,17 @@
 
     <LinearLayout
         android:id="@+id/qna"
-        android:layout_width="0dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/white_retangle_background"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="15dp"
         app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
         <ImageView
             android:layout_width="100dp"
@@ -87,17 +87,17 @@
 
     <LinearLayout
         android:id="@+id/conceptshot"
-        android:layout_width="0dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="224dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/white_retangle_background"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="15dp"
         app:layout_constraintDimensionRatio="H,1:1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
         <ImageView
             android:layout_width="100dp"
@@ -128,17 +128,17 @@
 
     <LinearLayout
         android:id="@+id/rullet"
-        android:layout_width="0dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="368dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/white_retangle_background"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="15dp"
         app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/qna">
 
         <ImageView
             android:layout_width="100dp"
@@ -160,6 +160,46 @@
             android:fontFamily="@font/kyobohandwriting"
             android:gravity="center"
             android:text="복불복 게임"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="-111dp"
+            tools:layout_editor_absoluteY="342dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/late_man"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/white_retangle_background"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="15dp"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/conceptshot">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:src="@drawable/stopwatch"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
+            app:layout_constraintHorizontal_bias="0.183"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+            app:layout_constraintVertical_bias="0.146" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/kyobohandwriting"
+            android:gravity="center"
+            android:text="지각자 체크"
             android:textSize="20sp"
             tools:layout_editor_absoluteX="-111dp"
             tools:layout_editor_absoluteY="342dp" />
