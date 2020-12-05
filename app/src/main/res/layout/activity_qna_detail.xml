@@ -53,7 +53,8 @@
 
 
         <ImageView
-            android:layout_width="169dp"
+            android:id="@+id/imageView11"
+            android:layout_width="125dp"
             android:layout_height="136dp"
             android:layout_marginEnd="4dp"
             android:src="@drawable/feelings"
@@ -62,27 +63,27 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/textView19"
             android:layout_width="200dp"
-            android:layout_height="82dp"
-            android:layout_marginLeft="30dp"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/bungee"
             android:text="Question/Mission"
-            android:textSize="30sp"
 
+            android:textSize="30sp"
+            app:layout_constraintEnd_toStartOf="@+id/imageView11"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:layout_width="250dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="70dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/kyobohandwriting"
             android:text="하루에 하나! 재미있는 추억을 만들어요"
             android:textSize="18dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView11"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView19"
             app:layout_constraintVertical_bias="0.86" />
 
 

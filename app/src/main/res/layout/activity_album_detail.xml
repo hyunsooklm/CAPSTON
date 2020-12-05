@@ -35,10 +35,11 @@
 
 
         <ImageView
-            android:layout_width="145dp"
+            android:id="@+id/imageView13"
+            android:layout_width="125dp"
             android:layout_height="133dp"
-            android:layout_marginTop="8dp"
 
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/photo"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,33 +47,32 @@
 
 
         <TextView
+            android:id="@+id/textView22"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
-            android:layout_marginStart="36dp"
             android:fontFamily="@font/bungee"
             android:gravity="center_horizontal|center_vertical"
             android:text="ALBUM"
             android:textSize="40sp"
+            app:layout_constraintEnd_toStartOf="@+id/imageView13"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:layout_width="250dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="35dp"
-            android:layout_marginLeft="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/kyobohandwriting"
             android:text="다양한 사진을 추가해보세요"
             android:textSize="18dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/grp_crt_btn2"
+            app:layout_constraintEnd_toStartOf="@+id/imageView13"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
         <Button
             android:id="@+id/grp_crt_btn2"
             android:layout_width="150dp"
             android:layout_height="30dp"
-            android:layout_marginStart="45dp"
             android:layout_marginBottom="1dp"
             android:background="@drawable/background_btn"
             android:fontFamily="@font/kyobohandwriting"
@@ -80,6 +80,7 @@
             android:textColor="#673AB7"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView13"
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
