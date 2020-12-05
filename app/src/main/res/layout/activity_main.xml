@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/signin_background"
     tools:context=".MainActivity">
 
     <GridView
         android:id="@+id/grid_rooms"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@drawable/background_signup2"
         android:numColumns="2"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
