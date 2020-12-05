@@ -51,6 +51,7 @@ public class LateCheckActivity extends AppCompatActivity {
         KEY = room_key;
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
+        bottomNavigationView.setSelectedItemId(R.id.nav_menu);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("rooms")
@@ -156,7 +157,6 @@ public class LateCheckActivity extends AppCompatActivity {
                             return true;
 
                         case R.id.nav_menu:
-                            gotoMenuActivity(KEY);
                             return true;
 
                         case R.id.nav_album:
