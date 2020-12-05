@@ -30,7 +30,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private Button search,set_location;
     private EditText address;
     private String location,lat,lon;
-
+    String Address="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +121,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     System.out.println(addressList.get(0).toString());
                     // 콤마를 기준으로 split
                     String[] splitStr = addressList.get(0).toString().split(",");
-                    String address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1, splitStr[0].length() - 2); // 주소
+                    Address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1, splitStr[0].length() - 2); // 주소
                     System.out.println(address);
 
                     String latitude = splitStr[10].substring(splitStr[10].indexOf("=") + 1); // 위도
@@ -135,13 +135,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     // 마커 생성
                     MarkerOptions mOptions2 = new MarkerOptions();
                     mOptions2.title("search result");
-                    mOptions2.snippet(address);
+                    mOptions2.snippet(Address);
                     mOptions2.position(point);
                     // 마커 추가
                     mMap.addMarker(mOptions2);
                     // 해당 좌표로 화면 줌
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
-                    Toast.makeText(getApplicationContext(),point.toString(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),Address,Toast.LENGTH_LONG).show();
                 }
             }
             }
