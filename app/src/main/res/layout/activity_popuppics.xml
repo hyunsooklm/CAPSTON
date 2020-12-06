@@ -16,11 +16,12 @@
             android:id="@+id/qqq"
             android:layout_width="match_parent"
             android:layout_height="53dp"
-            android:background="#B79DE6"
+            android:background="#CEC7ED"
             android:gravity="center"
             android:text="이미지"
             android:textColor="@color/com_kakao_button_text_press"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:fontFamily="@font/kyobohandwriting"/>
     </LinearLayout>
     <!-- //end 타이틀바 -->
 
@@ -29,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#B79DE6"
-        android:backgroundTint="#C7B5E6"
+        android:backgroundTint="#EDEDE8"
         android:orientation="vertical"
         android:padding="24dp">
 
@@ -57,15 +58,16 @@
         <Button
             android:id="@+id/downpics"
             android:layout_width="match_parent"
-            android:layout_height="53dp"
+            android:layout_height="wrap_content"
             android:background="#B79DE6"
-            android:backgroundTint="#AB8EDD"
+            android:backgroundTint="#CEC7ED"
+            android:fontFamily="@font/kyobohandwriting"
             android:gravity="center"
             android:onClick="mOnClose"
             android:padding="16dp"
             android:text="저장하기"
             android:textColor="@color/com_kakao_button_text_press"
-            android:textSize="15sp" />
+            android:textSize="20sp" />
     </LinearLayout>
     <!--// 닫기 버튼 -->
 </LinearLayout>

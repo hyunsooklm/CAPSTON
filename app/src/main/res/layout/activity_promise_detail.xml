@@ -39,7 +39,7 @@
             android:fontFamily="@font/bungee"
             android:gravity="center_horizontal|center_vertical"
             android:text="Promise"
-            android:textSize="45sp"
+            android:textSize="40sp"
             app:layout_constraintEnd_toStartOf="@+id/imageView8"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

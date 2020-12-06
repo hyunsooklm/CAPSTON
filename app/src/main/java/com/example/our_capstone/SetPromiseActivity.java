@@ -79,6 +79,7 @@ public class SetPromiseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setpromise);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
+        bottomNavigationView.setSelectedItemId(R.id.nav_menu);
         Intent intent = getIntent();    //데이터 수신
 
         voPromiseInfo = new VoPromiseInfo(); //약속객체
@@ -263,7 +264,6 @@ public class SetPromiseActivity extends AppCompatActivity {
                             return true;
 
                         case R.id.nav_menu:
-                            gotoMenuActivity(KEY);
                             return true;
 
                         case R.id.nav_album:

@@ -83,7 +83,7 @@ public class QnaDetailActivity extends AppCompatActivity {                      
         bottomNavigationView.setSelectedItemId(R.id.nav_menu);
 
         TextView title = (TextView)findViewById(R.id.title);
-        title.setText(QNATITLE);
+        title.setText(QNATITLE.split("_")[1]);
         TextView content = (TextView)findViewById(R.id.content);
         content.setText(QNACONTENT);
         imageView = (ImageView)findViewById(R.id.reply_img);

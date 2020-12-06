@@ -187,7 +187,7 @@ public class QnaActivity extends AppCompatActivity {                            
                 convertView = inflater.inflate(R.layout.greedy_our, parent, false);     // greedy view안에는 각각 greedy_our.xml을 적용
             }
             TextView nm = convertView.findViewById(R.id.title);                                        //각 방의 이름이 들어갈 텍스트뷰
-            nm.setText(qna.getTitle());                                                             //각 방이름 설정
+            nm.setText(qna.getTitle().split("_")[1]);                                                             //각 방이름 설정
             return convertView;
         }
     }

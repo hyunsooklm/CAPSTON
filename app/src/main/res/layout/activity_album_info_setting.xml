@@ -86,6 +86,7 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -104,18 +105,17 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/ic_launcher" />
+                app:srcCompat="@drawable/addphoto" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="60dp"
-                android:layout_marginLeft="38dp"
                 android:layout_marginTop="20dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/room_nm"
-                    android:layout_width="340dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="40dp"
                     android:ems="10"
@@ -131,7 +131,6 @@
                 android:id="@+id/apply_btn"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="126dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/background_login"
                 android:fontFamily="@font/kyobohandwriting"
