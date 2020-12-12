@@ -2,7 +2,6 @@ package com.example.our_capstone;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,15 +13,11 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,11 +28,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class LateCheckActivity extends AppCompatActivity {
     private String KEY;
@@ -58,7 +51,7 @@ public class LateCheckActivity extends AppCompatActivity {
                 .document(KEY)
                 .collection("promise")
                 .orderBy("Date", Query.Direction.ASCENDING)
-                .orderBy("Time",Query.Direction.ASCENDING)
+                //.orderBy("Time",Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,
@@ -71,7 +64,6 @@ public class LateCheckActivity extends AppCompatActivity {
                         final GridListAdapter_qna adapter = new GridListAdapter_qna();
                         for (QueryDocumentSnapshot doc : value) {
                             if (doc.getId() != null) {
-                                Log.d(TAG,(String)doc.get("Date")+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                 VoPromiseInfo promise=make_promise(doc.get("Date").toString(),doc.get("Time").toString(),doc.get("Location").toString(),
                                         (Double)doc.get("lon"),(Double)doc.get("lat"),
                                         (ArrayList)doc.get("attender"),(ArrayList)doc.get("Later"),doc.getId());
@@ -125,13 +117,8 @@ public class LateCheckActivity extends AppCompatActivity {
             pro_day.setTime(promise_date2);
 
             if(cur.after(pro_day)){
-//                Log.d(TAG,"약속어김!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//                Log.d(TAG,"오늘: "+sdf.format(cur.getTime())+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//                Log.d(TAG,"약속일:"+sdf.format(pro_day.getTime())+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 return false;
             }
-//            Log.d(TAG,"오늘: "+sdf.format(cur.getTime())+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//            Log.d(TAG,"약속일:"+sdf.format(pro_day.getTime())+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             return true;
         }catch (ParseException e){
             e.printStackTrace();
