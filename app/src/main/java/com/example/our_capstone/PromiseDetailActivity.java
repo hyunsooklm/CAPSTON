@@ -57,7 +57,7 @@ public class PromiseDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_promise_detail);
         user = FirebaseAuth.getInstance().getCurrentUser();                //파이어베이스의 인증 (회원관리) 이용해서 로그인정보 가져오기
         if (user == null) {                                                             //현재 상태가 로그인된 상태가 아니라면
-            Log.d(TAG, "로그인된상태가아니야??");                                                       //로그인창으로 이동하기
+            gotoSignInActivity();                                                       //로그인창으로 이동하기
         }
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navlistener);
@@ -66,7 +66,7 @@ public class PromiseDetailActivity extends AppCompatActivity {
         promise = (VoPromiseInfo) intent.getSerializableExtra("promise");
         later = promise.get_late_comer();
         PROMISE_KEY = promise.get_key();
-        //Toast.makeText(getApplicationContext(), promise.get_attender().get(0).getClass().getName() + "-" + promise.get_attender().get(0), Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),"약속키:"+PROMISE_KEY, Toast.LENGTH_LONG).show();
         Log.d(TAG, promise.get_attender().get(0).getClass().getName() + "-" + promise.get_attender().get(0) + "!!!!!!!!!!!!!!!!!!!!!!!!");
         String room_key = intent.getExtras().getString("room_key");
         KEY = room_key;
@@ -122,7 +122,7 @@ public class PromiseDetailActivity extends AppCompatActivity {
         else {
             arrive_button.setVisibility(View.GONE);
             distance_view.setVisibility(View.GONE);
-            delete.setVisibility(View.GONE);
+            //DLdelete.setVisibility(View.GONE);
             //modify.setVisibility(View.GONE);
             later_list.setVisibility(View.VISIBLE);
             String late_list=later_list.getText().toString();
@@ -198,6 +198,10 @@ public class PromiseDetailActivity extends AppCompatActivity {
         super.onBackPressed();
         moveTaskToBack(true);
         gotoLatecheckActivity();
+    }
+    private void gotoSignInActivity(){
+        Intent intent=new Intent(this,SignInActivity.class);
+        startActivity(intent);
     }
     private void gotoLatecheckActivity() {
         Intent intent=new Intent(this,LateCheckActivity.class);
