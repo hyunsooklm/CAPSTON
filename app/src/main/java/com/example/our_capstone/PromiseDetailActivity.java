@@ -10,7 +10,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -66,8 +65,6 @@ public class PromiseDetailActivity extends AppCompatActivity {
         promise = (VoPromiseInfo) intent.getSerializableExtra("promise");
         later = promise.get_late_comer();
         PROMISE_KEY = promise.get_key();
-        Toast.makeText(getApplicationContext(),"약속키:"+PROMISE_KEY, Toast.LENGTH_LONG).show();
-        Log.d(TAG, promise.get_attender().get(0).getClass().getName() + "-" + promise.get_attender().get(0) + "!!!!!!!!!!!!!!!!!!!!!!!!");
         String room_key = intent.getExtras().getString("room_key");
         KEY = room_key;
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -258,7 +255,6 @@ public class PromiseDetailActivity extends AppCompatActivity {
         distance = user_location.distanceTo(promise_location);
         DecimalFormat format=new DecimalFormat();
         format.applyLocalizedPattern("0.0");
-        Log.d(TAG,"목적지로부터 거리"+distance+"M");
         if(distance>=1000){
             float distance_km=distance/1000;
             distance_view.setText("목적지로부터 거리"+format.format(distance_km)+"km");
@@ -277,7 +273,6 @@ public class PromiseDetailActivity extends AppCompatActivity {
     }
     //------------------------------------------------------------------------------약속시간 전,후 확인함수
     private String user_name(){
-        Log.d(TAG,"USR==NULL?:"+(user==null));
         String user_info=(String)user.getDisplayName();
         String name=user_info.split("_")[0];
         return name;
